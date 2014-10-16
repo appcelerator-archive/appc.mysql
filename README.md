@@ -20,7 +20,7 @@ var MYSQLConnector = require('appc.mysql'),
 	});
 ```
 
-By default with use `localhost`, `root` and empty password.
+By default we use `localhost`, `root` and empty password.
 
 However, you must set a database.
 
@@ -50,3 +50,12 @@ var User = APIBuilder.createModel('account',{
 	}
 });
 ```
+
+To use the tests, you'll want to create a database with the following table:
+
+CREATE TABLE post
+(
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+title VARCHAR(255),
+content VARCHAR(255)
+);

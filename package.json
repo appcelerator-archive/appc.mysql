@@ -12,6 +12,7 @@
   ],
   "repository": {},
   "scripts": {
+    "test": "grunt",
     "start": "./node_modules/apibuilder/bin/api install && NODE_PATH=$(./node_modules/apibuilder/bin/api npmpath) node ./app.js"
   },
   "private": true,
@@ -22,6 +23,18 @@
     "lodash": "^2.4.1",
     "mysql": "^2.5.0",
     "pkginfo": "^0.3.0"
+  },
+  "devDependencies": {
+    "async": "^0.9.0",
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-env": "^0.4.1",
+    "grunt-mocha-test": "^0.11.0",
+    "istanbul": "^0.3.2",
+    "mocha": "^1.21.4",
+    "shortid": "^2.0.1",
+    "should": "^4.0.4"
   },
   "appcelerator": {}
 }
