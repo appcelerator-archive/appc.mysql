@@ -70,7 +70,7 @@ User.create(users, function(err,users){
 server.authorization = APIKeyAuthorization;
 
 // create a user api from a user model
-server.api(User);
+server.addModel(User);
 
 // start the server
 server.start(function(){
