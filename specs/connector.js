@@ -46,15 +46,6 @@ describe('Connector', function() {
 		});
 	});
 
-	it('should be able to fetch metadata', function(next) {
-		connector.fetchMetadata(function(err, meta) {
-			should(err).be.not.ok;
-			should(meta).be.an.object;
-			should(Object.keys(meta)).containEql('fields');
-			next();
-		});
-	});
-
 	it('should be able to fetch schema', function(next) {
 		connector.fetchSchema(function(err, schema) {
 			should(err).be.not.ok;
