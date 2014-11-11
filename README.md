@@ -2,10 +2,12 @@
 
 This is a API Builder connector to MYSQL.
 
+> This software is pre-release and not yet ready for usage.  Please don't use this just yet while we're working through testing and finishing it up. Once it's ready, we'll make an announcement about it.
+
 To install:
 
 ```bash
-$ api install appc.mysql --save
+$ appc install appc.mysql --save
 ```
 
 Use in your application:
@@ -53,9 +55,15 @@ var User = APIBuilder.createModel('account',{
 
 To use the tests, you'll want to create a database with the following table:
 
+```
 CREATE TABLE post
 (
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 title VARCHAR(255),
 content VARCHAR(255)
 );
+```
+
+# License
+
+This source code is licensed as part of the Appcelerator Enterprise Platform and subject to the End User License Agreement and Enterprise License and Ordering Agreement. Copyright (c) 2014 by Appcelerator, Inc. All Rights Reserved. This source code is Proprietary and Confidential to Appcelerator, Inc.
