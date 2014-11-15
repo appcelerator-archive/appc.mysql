@@ -1,7 +1,5 @@
 var APIBuilder = require('apibuilder'),
-	server = new APIBuilder(),
-	Connector = require('./lib'),
-	connector = new Connector();
+	server = new APIBuilder();
 
 // lifecycle examples
 server.on('starting', function(){
@@ -36,32 +34,30 @@ function APIKeyAuthorization(req, resp, next) {
 
 //--------------------- simple user model ---------------------//
 
-var User = APIBuilder.createModel('user',{
+var Post = APIBuilder.createModel('post',{
 	fields: {
-		name: {type:'string', required: false, validator: /[a-zA-Z]{3,}/ }
+		title: { type: String },
+		content: { type: String }
 	},
-	connector: connector,	// a model level connector
+	connector: 'appc.mysql',
 	metadata: {
 		mysql: {
-			table: 'users'
+			table: 'post'
 		}
 	}
 });
 
-// create some users programatically
-var users = [
-	{name: 'Jeff'},
-	{name: 'Nolan'},
-	{name: 'Neeraj'},
-	{name: 'Tony'},
-	{name: 'Rick'},
-	{name: 'Kranthi'}
+// create some posts programatically
+var posts = [
+	{title: 'A journey through time', content: 'take a journey'},
+	{title: 'The Bible', content: 'In the beginning, God created the heavens and the earth.'}
 ];
-User.create(users, function(err,users){
-	server.logger.info('Created some users',users);
+Post.create(posts, function(err,posts){
+	if (err) { return server.logger.error(err); }
+	server.logger.info('Created some posts',posts);
 
-	User.find({name:'Jeff'},function(err,results){
-		console.log('Found Jeff? ',results && results.first());
+	Post.find({title:'The Bible'},function(err,results){
+		console.log('Found The Bible? ',results && results.first());
 	});
 });
 
@@ -69,10 +65,11 @@ User.create(users, function(err,users){
 // add an authorization policy for all requests at the server log
 server.authorization = APIKeyAuthorization;
 
-// create a user api from a user model
-server.addModel(User);
+// create a post api from a post model
+server.addModel(Post);
 
 // start the server
-server.start(function(){
+server.start(function(err){
+	if (err) { server.logger.fatal(err); }
 	server.logger.info('server started on port', server.port);
 });
