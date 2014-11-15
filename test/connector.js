@@ -1,13 +1,15 @@
 var should = require('should'),
 	async = require('async'),
 	url = require('url'),
-	Connector = require('../'),
 	APIBuilder = require('apibuilder'),
+	Connector = require('../').create(APIBuilder),
 	log = APIBuilder.createLogger({}, { name: 'api-connector-mysql TEST', useConsole: true, level: 'info' }),
 	Loader = APIBuilder.Loader,
-	config = new Loader('../conf'),
+	_ = require('appc-cli-core').lodash,
+	config = _.defaults({'username':'root','password':'','database':'test','host':'localhost'}, new Loader('../conf')),
 	connector = new Connector(config),
 	Model;
+
 
 describe('Connector', function() {
 
@@ -24,7 +26,9 @@ describe('Connector', function() {
 		should(Model).be.an.object;
 
 		connector.connect(function(err) {
-			Model.deleteAll(next);
+			Model.deleteAll(function(){
+				next();
+			});
 		});
 	});
 

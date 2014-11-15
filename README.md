@@ -58,9 +58,9 @@ To use the tests, you'll want to create a database with the following table:
 ```
 CREATE TABLE post
 (
-id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-title VARCHAR(255),
-content VARCHAR(255)
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	title VARCHAR(255),
+	content VARCHAR(255)
 );
 ```
 
