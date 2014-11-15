@@ -7,19 +7,7 @@ This is a API Builder connector to MYSQL.
 To install:
 
 ```bash
-$ appc install appc.mysql --save
-```
-
-Use in your application:
-
-```javascript
-var MYSQLConnector = require('appc.mysql'),
-	connector = new MYSQLConnector({
-		host: 'localhost',
-		username: '',
-		password: '',
-		database: 'test'
-	});
+$ appc install connector/appc.mysql --save
 ```
 
 By default we use `localhost`, `root` and empty password.
@@ -33,18 +21,18 @@ var Account = APIBuilder.createModel('Account',{
 	fields: {
 		Name: {type:'string', required: true, validator: /[a-zA-Z]{3,}/ }
 	},
-	connector: connector
+	connector: 'appc.mysql'
 });
 ```
 
 If you want to map a specific model to a specific sobject name, use metadata.  For example, to map the `account` model to the table named `accounts`, set it such as:
 
 ```javascript
-var User = APIBuilder.createModel('account',{
+var Account = APIBuilder.createModel('account',{
 	fields: {
 		Name: {type:'string', required: false, validator: /[a-zA-Z]{3,}/ }
 	},
-	connector: connector,
+	connector: 'appc.mysql',
 	metadata: {
 		mysql: {
 			table: 'accounts'
