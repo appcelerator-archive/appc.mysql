@@ -17,7 +17,7 @@ However, you must set a database.
 Now reference the connector in your model.
 
 ```javascript
-var Account = APIBuilder.createModel('Account',{
+var Account = APIBuilder.Model.extend('Account',{
 	fields: {
 		Name: {type:'string', required: true, validator: /[a-zA-Z]{3,}/ }
 	},
@@ -28,7 +28,7 @@ var Account = APIBuilder.createModel('Account',{
 If you want to map a specific model to a specific sobject name, use metadata.  For example, to map the `account` model to the table named `accounts`, set it such as:
 
 ```javascript
-var Account = APIBuilder.createModel('account',{
+var Account = APIBuilder.Model.extend('account',{
 	fields: {
 		Name: {type:'string', required: false, validator: /[a-zA-Z]{3,}/ }
 	},

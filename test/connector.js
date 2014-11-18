@@ -1,13 +1,10 @@
 var should = require('should'),
 	async = require('async'),
-	url = require('url'),
 	APIBuilder = require('apibuilder'),
 	Connector = require('../').create(APIBuilder),
 	log = APIBuilder.createLogger({}, { name: 'api-connector-mysql TEST', useConsole: true, level: 'info' }),
-	Loader = APIBuilder.Loader,
 	_ = require('appc-cli-core').lodash,
-	config = _.defaults({'username':'root','password':'','database':'test','host':'localhost'}, new Loader('../conf')),
-	connector = new Connector(config),
+	connector = new Connector(),
 	Model;
 
 
