@@ -3,7 +3,7 @@ var should = require('should'),
 	APIBuilder = require('apibuilder'),
 	Connector = require('../').create(APIBuilder),
 	log = APIBuilder.createLogger({}, { name: 'api-connector-mysql TEST', useConsole: true, level: 'info' }),
-	_ = require('appc-cli-core').lodash,
+	_ = require('appcelerator').lodash,
 	connector = new Connector(),
 	Model;
 

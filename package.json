@@ -1,7 +1,7 @@
 {
   "name": "appc.mysql",
   "description": "MYSQL connector",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Jeff Haynie",
   "license": "",
   "framework": "none",
@@ -21,7 +21,7 @@
   },
   "private": true,
   "dependencies": {
-    "appc-cli-core": "*",
+    "appcelerator": "*",
     "async": "^0.9.0",
     "mysql": "^2.5.0",
     "pkginfo": "^0.3.0",
