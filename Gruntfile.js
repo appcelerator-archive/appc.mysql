@@ -6,7 +6,7 @@ module.exports = function(grunt) {
 			options: {
 				timeout: 30000,
 				reporter: 'spec',
-				ignoreLeaks: false
+				ignoreLeaks: true
 			},
 			src: ['test/**/*.js']
 		},

@@ -4,9 +4,10 @@ var should = require('should'),
 	Connector = require('../').create(APIBuilder),
 	log = APIBuilder.createLogger({}, { name: 'api-connector-mysql TEST', useConsole: true, level: 'info' }),
 	_ = require('appcelerator').lodash,
-	connector = new Connector(),
+	connector = new Connector({
+		port: 3306
+	}),
 	Model;
-
 
 describe('Connector', function() {
 
@@ -23,7 +24,7 @@ describe('Connector', function() {
 		should(Model).be.an.object;
 
 		connector.connect(function(err) {
-			Model.deleteAll(function(){
+			Model.deleteAll(function() {
 				next();
 			});
 		});
