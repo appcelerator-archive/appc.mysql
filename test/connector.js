@@ -1,9 +1,9 @@
 var should = require('should'),
 	async = require('async'),
-	APIBuilder = require('apibuilder'),
-	Connector = require('../').create(APIBuilder),
-	log = APIBuilder.createLogger({}, { name: 'api-connector-mysql TEST', useConsole: true, level: 'info' }),
 	_ = require('appcelerator').lodash,
+	APIBuilder = require('appcelerator').apibuilder,
+	log = APIBuilder.createLogger({}, { name: 'api-connector-mysql TEST', useConsole: true, level: 'info' }),
+	Connector = require('../lib').create(APIBuilder),
 	connector = new Connector({
 		port: 3306
 	}),

@@ -1,41 +1,40 @@
 {
-  "name": "appc.mysql",
-  "description": "MYSQL connector",
-  "version": "1.0.4",
-  "author": "Jeff Haynie",
-  "license": "",
-  "framework": "none",
-  "keywords": [
-    "apibuilder",
-    "apibuilder-connector",
-    "appc-cli-plugin",
-    "mysql"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:appcelerator/api-connector-mysql.git"
-  },
-  "scripts": {
-    "test": "grunt",
-    "start": "node ./app.js"
-  },
-  "private": true,
-  "dependencies": {
-    "appcelerator": "*",
-    "async": "^0.9.0",
-    "mysql": "^2.5.0",
-    "pkginfo": "^0.3.0",
-    "shortid": "^2.0.1"
-  },
-  "devDependencies": {
-    "apibuilder": "*",
-    "async": "^0.9.0",
-    "grunt": "^0.4.5",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-kahvesi": "^0.1.0",
-    "grunt-mocha-test": "^0.12.0",
-    "should": "^4.0.4"
-  },
-  "appcelerator": {}
+	"name": "appc.mysql",
+	"description": "MYSQL connector",
+	"version": "1.0.5",
+	"author": "Jeff Haynie",
+	"license": "",
+	"framework": "none",
+	"keywords": [
+		"apibuilder",
+		"apibuilder-connector",
+		"appc-cli-plugin",
+		"mysql"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:appcelerator/api-connector-mysql.git"
+	},
+	"scripts": {
+		"test": "grunt",
+		"start": "node ./app.js"
+	},
+	"private": true,
+	"dependencies": {
+		"async": "^0.9.0",
+		"lodash": "^2.4.1",
+		"mysql": "^2.5.0",
+		"pkginfo": "^0.3.0"
+	},
+	"devDependencies": {
+		"appcelerator": "*",
+		"grunt": "^0.4.5",
+		"grunt-contrib-clean": "^0.6.0",
+		"grunt-contrib-jshint": "^0.10.0",
+		"grunt-kahvesi": "^0.1.0",
+		"grunt-mocha-test": "^0.12.0",
+		"mocha": "^1.21.4",
+		"should": "^4.0.4"
+	},
+	"appcelerator": {}
 }

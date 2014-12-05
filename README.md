@@ -34,7 +34,7 @@ var Account = APIBuilder.Model.extend('account',{
 	},
 	connector: 'appc.mysql',
 	metadata: {
-		'appc.mysql': {
+		mysql: {
 			table: 'accounts'
 		}
 	}

@@ -1,4 +1,4 @@
-var APIBuilder = require('apibuilder'),
+var APIBuilder = require('appcelerator').apibuilder,
 	server = new APIBuilder();
 
 // lifecycle examples
