@@ -16,8 +16,13 @@ module.exports = {
 		duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
 		activeDuration: 1000 * 60 * 5 // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
 	},
-	database: 'test',
-	username: 'root',
-	password: '',
-	host: 'localhost'
+	connectors: {
+		'appc.mysql': {
+			database: 'test',
+			username: 'root',
+			password: '',
+			host: 'localhost',
+			port: 3306
+		}
+	}
 };

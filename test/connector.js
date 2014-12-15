@@ -2,11 +2,9 @@ var should = require('should'),
 	async = require('async'),
 	_ = require('appcelerator').lodash,
 	APIBuilder = require('appcelerator').apibuilder,
+	server = new APIBuilder(),
 	log = APIBuilder.createLogger({}, { name: 'api-connector-mysql TEST', useConsole: true, level: 'info' }),
-	Connector = require('../lib').create(APIBuilder),
-	connector = new Connector({
-		port: 3306
-	}),
+	connector = server.getConnector('appc.mysql'),
 	Model;
 
 describe('Connector', function() {
@@ -18,15 +16,13 @@ describe('Connector', function() {
 				title: { type: String },
 				content: { type: String }
 			},
-			connector: connector
+			connector: 'appc.mysql'
 		});
 
 		should(Model).be.an.object;
 
-		connector.connect(function(err) {
-			Model.deleteAll(function() {
-				next();
-			});
+		Model.deleteAll(function() {
+			next();
 		});
 	});
 
@@ -35,15 +31,6 @@ describe('Connector', function() {
 			if (err) {
 				log.error(err.message);
 			}
-			connector.disconnect(next);
-		});
-	});
-
-	it('should be able to fetch config', function(next) {
-		connector.fetchConfig(function(err, config) {
-			should(err).be.not.ok;
-			should(config).be.an.object;
-			should(Object.keys(config)).containEql('host');
 			next();
 		});
 	});
@@ -62,7 +49,7 @@ describe('Connector', function() {
 					MyTitle: { name: 'title', type: String },
 					MyContent: { name: 'content', type: String }
 				},
-				connector: connector
+				connector: 'appc.mysql'
 			}),
 			title = 'Test',
 			content = 'Hello world',
