@@ -43,6 +43,11 @@ describe('Connector', function() {
 		});
 	});
 
+	it('should create models from tables', function() {
+		var SuperPost = connector.getModel('super_post');
+		should(SuperPost).be.ok;
+	});
+
 	it('should be able to use named fields', function(next) {
 		var Model = APIBuilder.Model.extend('post', {
 				fields: {

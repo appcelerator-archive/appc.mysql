@@ -41,10 +41,16 @@ var Account = APIBuilder.Model.extend('account',{
 });
 ```
 
-To use the tests, you'll want to create a database with the following table:
+To use the tests, you'll want to create a database with the following tables:
 
 ```
 CREATE TABLE post
+(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	title VARCHAR(255),
+	content VARCHAR(255)
+);
+CREATE TABLE super_post
 (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	title VARCHAR(255),
