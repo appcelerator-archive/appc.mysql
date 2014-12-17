@@ -67,6 +67,32 @@ describe('Connector', function() {
 		});
 	});
 
+	it('should be able to ignore fields absent from schema', function(next) {
+		var Model = APIBuilder.Model.extend('post', {
+				fields: {
+					MyTitle: { name: 'title', type: String },
+					MyContent: { name: 'content', type: String },
+					MyCustomField: { type: String }
+				},
+				connector: 'appc.mysql'
+			}),
+			title = 'Test',
+			content = 'Hello world',
+			object = {
+				MyTitle: title,
+				MyContent: content,
+				MyCustomField: 'should be ignored'
+			};
+		Model.create(object, function(err, instance) {
+			should(err).be.not.ok;
+			should(instance).be.an.Object;
+			should(instance.getPrimaryKey()).be.a.Number;
+			should(instance.MyTitle).equal(title);
+			should(instance.MyContent).equal(content);
+			instance.delete(next);
+		});
+	});
+
 	it('should be able to create instance', function(next) {
 
 		var title = 'Test',
