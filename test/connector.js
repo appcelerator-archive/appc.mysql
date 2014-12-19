@@ -44,7 +44,7 @@ describe('Connector', function() {
 	});
 
 	it('should create models from tables', function() {
-		var SuperPost = connector.getModel('super_post');
+		var SuperPost = connector.getModel('appc.mysql/super_post');
 		should(SuperPost).be.ok;
 	});
 
