@@ -68,7 +68,15 @@ describe('Connector', function() {
 			should(instance.getPrimaryKey()).be.a.Number;
 			should(instance.MyTitle).equal(title);
 			should(instance.MyContent).equal(content);
-			instance.delete(next);
+			Model.query({
+				where: {
+					MyTitle: 'Test'
+				}
+			}, function(err, coll) {
+				should(err).be.not.ok;
+				should(coll.length).be.greaterThan(0);				
+				instance.delete(next);
+			});
 		});
 	});
 
