@@ -18,12 +18,15 @@ module.exports = {
 	},
 	connectors: {
 		'appc.mysql': {
+			connection_pooling: true,
+
+			connectionLimit: 10,
 			database: 'test',
 			username: 'root',
 			password: '',
 			host: 'localhost',
 			port: 3306,
-			
+
 			dontGenerateModelsFromSchema: false,
 			dontGenerateAPISFromSchema: false
 		}
