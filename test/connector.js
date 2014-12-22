@@ -48,6 +48,17 @@ describe('Connector', function() {
 		should(SuperPost).be.ok;
 	});
 
+	it('should be able to extend from tables', function() {
+		var SupererPost = APIBuilder.Model.extend('appc.mysql/super_post', 'superer_post', {
+			fields: {
+				MyTitle: { name: 'title', type: String },
+				MyContent: { name: 'content', type: String }
+			},
+			connector: 'appc.mysql'
+		});
+		should(SupererPost).be.ok;
+	});
+
 	it('should be able to use named fields', function(next) {
 		var Model = APIBuilder.Model.extend('post', {
 				fields: {
