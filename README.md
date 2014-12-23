@@ -56,6 +56,13 @@ CREATE TABLE super_post
 	title VARCHAR(255),
 	content VARCHAR(255)
 );
+CREATE TABLE employee
+(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	first_name VARCHAR(255),
+	last_name VARCHAR(255),
+	email_address VARCHAR(255)
+);
 ```
 
 # License

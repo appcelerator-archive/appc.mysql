@@ -85,7 +85,44 @@ describe('Connector', function() {
 				}
 			}, function(err, coll) {
 				should(err).be.not.ok;
-				should(coll.length).be.greaterThan(0);				
+				should(coll.length).be.greaterThan(0);
+				instance.delete(next);
+			});
+		});
+	});
+
+	it('API-298: should be able to use named fields', function(next) {
+		// create a model from a mysql table
+		var uc_1 = APIBuilder.createModel('uc_1', {
+				fields: {
+					fname: { type: String, description: 'First name', name: 'first_name', required: true },
+					lname: { type: String, description: 'Last name', required: true, name: 'last_name' },
+					email: { type: String, description: 'Email address', required: true, name: 'email_address' }
+				},
+				connector: 'appc.mysql',
+				metadata: {
+					'appc.mysql': { table: 'employee' }
+				}
+			}),
+			object = {
+				fname: 'Test',
+				lname: 'Smith',
+				email: 'dtoth@appcelerator.com'
+			};
+		uc_1.create(object, function(err, instance) {
+			should(err).be.not.ok;
+			should(instance).be.an.Object;
+			should(instance.getPrimaryKey()).be.a.Number;
+			should(instance.fname).equal(object.fname);
+			should(instance.lname).equal(object.lname);
+			should(instance.email).equal(object.email);
+			uc_1.query({
+				where: {
+					lname: object.lname
+				}
+			}, function(err, coll) {
+				should(err).be.not.ok;
+				should(coll.length).be.greaterThan(0);
 				instance.delete(next);
 			});
 		});
