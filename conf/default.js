@@ -22,7 +22,7 @@ module.exports = {
 
 			connectionLimit: 10,
 			database: 'test',
-			username: 'root',
+			user: 'root',
 			password: '',
 			host: 'localhost',
 			port: 3306,
