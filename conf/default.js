@@ -18,9 +18,9 @@ module.exports = {
 	},
 	connectors: {
 		'appc.mysql': {
-			connection_pooling: true,
-
+			connectionPooling: true,
 			connectionLimit: 10,
+
 			database: 'test',
 			user: 'root',
 			password: '',
