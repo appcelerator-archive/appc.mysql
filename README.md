@@ -12,7 +12,7 @@ $ appc install connector/appc.mysql --save
 
 By default we use `localhost`, `root` and empty password.
 
-However, you must set a database.
+However, you must set a database in your configuration.
 
 Now reference the connector in your model.
 
@@ -25,7 +25,7 @@ var Account = APIBuilder.Model.extend('Account',{
 });
 ```
 
-If you want to map a specific model to a specific sobject name, use metadata.  For example, to map the `account` model to the table named `accounts`, set it such as:
+If you want to map a specific model to a specific table, use metadata.  For example, to map the `account` model to the table named `accounts`, set it such as:
 
 ```javascript
 var Account = APIBuilder.Model.extend('account',{
@@ -40,6 +40,8 @@ var Account = APIBuilder.Model.extend('account',{
 	}
 });
 ```
+
+# Testing
 
 To use the tests, you'll want to create a database with the following tables:
 
