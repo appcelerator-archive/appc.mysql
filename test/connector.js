@@ -58,6 +58,7 @@ describe('Connector', function() {
 		});
 		should(SupererPost).be.ok;
 		should(SupererPost._supermodel).be.ok;
+		should(SupererPost._parent).be.ok;
 		SupererPost.create({
 			MyTitle: 'cheese',
 			MyContent: 'was eaten this night'
