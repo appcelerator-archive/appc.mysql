@@ -285,6 +285,40 @@ describe('Connector', function() {
 
 	});
 
+	it('API-325: should be able to query with unsel', function(callback) {
+
+		var title = 'Test',
+			content = 'Hello world',
+			object = {
+				title: title,
+				content: content
+			};
+
+		Model.create(object, function(err, instance) {
+			should(err).be.not.ok;
+			should(instance).be.an.object;
+
+			var options = {
+				where: { content: { $like: 'Hello%' } },
+				unsel: { title: 1 },
+				order: { title: -1, content: 1 },
+				limit: 3,
+				skip: 0
+			};
+			Model.query(options, function(err, coll) {
+				should(err).be.not.ok;
+
+				async.eachSeries(coll, function(obj, next) {
+					should(obj.getPrimaryKey()).be.a.Number;
+					should(obj.title).be.not.ok;
+					should(obj.content).be.a.String;
+					obj.remove(next);
+				}, callback);
+			});
+		});
+
+	});
+
 	it('should be able to find all instances', function(next) {
 
 		var posts = [
