@@ -287,11 +287,18 @@ describe('Connector', function() {
 
 	it('API-325: should be able to query with unsel', function(callback) {
 
+		var Model = APIBuilder.Model.extend('post', {
+			fields: {
+				myTitle: { name: 'title', type: String },
+				myContent: { name: 'content', type: String }
+			},
+			connector: 'appc.mysql'
+		});
 		var title = 'Test',
 			content = 'Hello world',
 			object = {
-				title: title,
-				content: content
+				myTitle: title,
+				myContent: content
 			};
 
 		Model.create(object, function(err, instance) {
@@ -299,9 +306,9 @@ describe('Connector', function() {
 			should(instance).be.an.object;
 
 			var options = {
-				where: { content: { $like: 'Hello%' } },
-				unsel: { title: 1 },
-				order: { title: -1, content: 1 },
+				where: { myContent: { $like: 'Hello%' } },
+				unsel: { myTitle: 1 },
+				order: { myTitle: -1, myContent: 1 },
 				limit: 3,
 				skip: 0
 			};
@@ -310,8 +317,8 @@ describe('Connector', function() {
 
 				async.eachSeries(coll, function(obj, next) {
 					should(obj.getPrimaryKey()).be.a.Number;
-					should(obj.title).be.not.ok;
-					should(obj.content).be.a.String;
+					should(obj.myTitle).be.not.ok;
+					should(obj.myContent).be.a.String;
 					obj.remove(next);
 				}, callback);
 			});
@@ -331,34 +338,36 @@ describe('Connector', function() {
 				content: 'Goodbye world'
 			}];
 
-		Model.create(posts, function(err, coll) {
-			should(err).be.not.ok;
-			should(coll.length).equal(posts.length);
-
-			var keys = [];
-			coll.forEach(function(post) {
-				keys.push(post.getPrimaryKey());
-			});
-
-			Model.find(function(err, coll2) {
+		Model.deleteAll(function() {
+			Model.create(posts, function(err, coll) {
 				should(err).be.not.ok;
-				should(coll2.length).equal(coll.length);
+				should(coll.length).equal(posts.length);
 
-				var array = [];
-
-				coll2.forEach(function(post, i) {
-					should(post.getPrimaryKey()).equal(keys[i]);
-					array.push(post);
+				var keys = [];
+				coll.forEach(function(post) {
+					keys.push(post.getPrimaryKey());
 				});
 
-				async.eachSeries(array, function(post, next_) {
-					should(post).be.an.object;
-					post.delete(next_);
-				}, function(err) {
-					next(err);
+				Model.find(function(err, coll2) {
+					should(err).be.not.ok;
+					should(coll2.length).equal(coll.length);
+
+					var array = [];
+
+					coll2.forEach(function(post, i) {
+						should(post.getPrimaryKey()).equal(keys[i]);
+						array.push(post);
+					});
+
+					async.eachSeries(array, function(post, next_) {
+						should(post).be.an.object;
+						post.delete(next_);
+					}, function(err) {
+						next(err);
+					});
 				});
+
 			});
-
 		});
 
 	});
