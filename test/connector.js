@@ -362,7 +362,6 @@ describe('Connector', function() {
 
 	});
 
-
 	it('API-337: should be able to query with order', function(next) {
 
 		var posts = [
@@ -395,6 +394,42 @@ describe('Connector', function() {
 						should(coll2[1].getPrimaryKey()).equal(coll[1].getPrimaryKey());
 
 						Model.deleteAll(next);
+					});
+				});
+
+			});
+		});
+
+	});
+
+	it('API-281: should support paging', function(next) {
+
+		var posts = [];
+		for (var i = 1; i <= 30; i++) {
+			posts.push({
+				title: 'Test' + i,
+				content: 'Hello world'
+			});
+		}
+
+		Model.deleteAll(function() {
+			Model.create(posts, function(err, coll) {
+				should(err).be.not.ok;
+
+				Model.query({ per_page: 1, page: 2 }, function(err, coll2) {
+					should(err).be.not.ok;
+					should(coll2[0].getPrimaryKey()).equal(coll[1].getPrimaryKey());
+
+					Model.query({ skip: 1, limit: 1 }, function(err, coll2) {
+						should(err).be.not.ok;
+						should(coll2[0].getPrimaryKey()).equal(coll[1].getPrimaryKey());
+
+						Model.query({ page: 2 }, function(err, coll2) {
+							should(err).be.not.ok;
+							should(coll2[0].getPrimaryKey()).equal(coll[10].getPrimaryKey());
+
+							Model.deleteAll(next);
+						});
 					});
 				});
 
