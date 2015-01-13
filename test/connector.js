@@ -341,9 +341,6 @@ describe('Connector', function() {
 
 		Model.deleteAll(function() {
 			Model.create(posts, function(err, coll) {
-				should(err).be.not.ok;
-				should(coll.length).equal(posts.length);
-
 				var keys = [];
 				coll.forEach(function(post) {
 					keys.push(post.getPrimaryKey());
@@ -353,18 +350,51 @@ describe('Connector', function() {
 					should(err).be.not.ok;
 					should(coll2.length).equal(coll.length);
 
-					var array = [];
-
 					coll2.forEach(function(post, i) {
 						should(post.getPrimaryKey()).equal(keys[i]);
-						array.push(post);
 					});
 
-					async.eachSeries(array, function(post, next_) {
-						should(post).be.an.object;
-						post.delete(next_);
-					}, function(err) {
-						next(err);
+					Model.deleteAll(next);
+				});
+
+			});
+		});
+
+	});
+
+
+	it('API-337: should be able to query with order', function(next) {
+
+		var posts = [
+			{
+				title: 'Test1',
+				content: 'Hello world'
+			},
+			{
+				title: 'Test2',
+				content: 'Goodbye world'
+			},
+			{
+				title: 'Test3',
+				content: 'Goodbye world'
+			}
+		];
+
+		Model.deleteAll(function() {
+			Model.create(posts, function(err, coll) {
+				should(err).be.not.ok;
+
+				Model.query({ order: { title: 1 }, limit: 2 }, function(err, coll2) {
+					should(err).be.not.ok;
+					should(coll2[0].getPrimaryKey()).equal(coll[0].getPrimaryKey());
+					should(coll2[1].getPrimaryKey()).equal(coll[1].getPrimaryKey());
+
+					Model.query({ order: { title: -1 } }, function(err, coll2) {
+						should(err).be.not.ok;
+						should(coll2[0].getPrimaryKey()).equal(coll[2].getPrimaryKey());
+						should(coll2[1].getPrimaryKey()).equal(coll[1].getPrimaryKey());
+
+						Model.deleteAll(next);
 					});
 				});
 
