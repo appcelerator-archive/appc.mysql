@@ -25,10 +25,10 @@ server.start(function(err) {
 	];
 	Post.create(posts, function(err, posts) {
 		if (err) { return server.logger.error(err); }
-		server.logger.info('Created some posts', posts);
+		server.logger.info('Created some posts:', [ posts[0], posts[1] ]);
 
 		Post.find({ title: 'The Bible' }, function(err, results) {
-			console.log('Found The Bible? ', results && results.first());
+			server.logger.info('Found The Bible:', results && results[0]);
 		});
 	});
 
