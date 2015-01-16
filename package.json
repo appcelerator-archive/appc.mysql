@@ -1,7 +1,7 @@
 {
 	"name": "appc.mysql",
 	"description": "MySQL Connector",
-	"version": "1.0.30",
+	"version": "1.0.31",
 	"author": "Jeff Haynie",
 	"license": "",
 	"framework": "none",
