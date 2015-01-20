@@ -471,5 +471,17 @@ describe('Connector', function() {
 		});
 
 	});
-
+	
+	it('API-377: should be able to query with just skip', function(callback) {
+		Model.query({}, function(err, coll1) {
+			should(err).be.not.ok;
+			should(coll1).be.ok;
+			Model.query({ skip: 1 }, function(err, coll2) {
+				should(err).be.not.ok;
+				should(coll2).be.ok;
+				callback();
+			});
+		});
+	});
+	
 });
