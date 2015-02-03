@@ -1,9 +1,9 @@
 var should = require('should'),
 	async = require('async'),
 	_ = require('appcelerator').lodash,
-	APIBuilder = require('appcelerator').apibuilder,
-	server = new APIBuilder(),
-	log = APIBuilder.createLogger({}, { name: 'api-connector-mysql TEST', useConsole: true, level: 'info' }),
+	Arrow = require('appcelerator').arrow,
+	server = new Arrow(),
+	log = Arrow.createLogger({}, { name: 'api-connector-mysql TEST', useConsole: true, level: 'info' }),
 	connector = server.getConnector('appc.mysql'),
 	Model;
 
@@ -11,7 +11,7 @@ describe('Connector', function() {
 
 	before(function(next) {
 		// define your model
-		Model = APIBuilder.Model.extend('post', {
+		Model = Arrow.Model.extend('post', {
 			fields: {
 				title: { type: String },
 				content: { type: String }
@@ -49,7 +49,7 @@ describe('Connector', function() {
 	});
 
 	it('should be able to extend from tables', function(next) {
-		var SupererPost = APIBuilder.Model.extend('appc.mysql/super_post', 'superer_post', {
+		var SupererPost = Arrow.Model.extend('appc.mysql/super_post', 'superer_post', {
 			fields: {
 				MyTitle: { name: 'title', type: String },
 				MyContent: { name: 'content', type: String }
@@ -73,7 +73,7 @@ describe('Connector', function() {
 	});
 
 	it('should be able to use named fields', function(next) {
-		var Model = APIBuilder.Model.extend('post', {
+		var Model = Arrow.Model.extend('post', {
 				fields: {
 					MyTitle: { name: 'title', type: String },
 					MyContent: { name: 'content', type: String }
@@ -106,7 +106,7 @@ describe('Connector', function() {
 
 	it('API-298: should be able to use named fields', function(next) {
 		// create a model from a mysql table
-		var uc_1 = APIBuilder.createModel('uc_1', {
+		var uc_1 = Arrow.createModel('uc_1', {
 				fields: {
 					fname: { type: String, description: 'First name', name: 'first_name', required: true },
 					lname: { type: String, description: 'Last name', required: true, name: 'last_name' },
@@ -142,7 +142,7 @@ describe('Connector', function() {
 	});
 
 	it('should be able to ignore fields absent from schema', function(next) {
-		var Model = APIBuilder.Model.extend('post', {
+		var Model = Arrow.Model.extend('post', {
 				fields: {
 					MyTitle: { name: 'title', type: String },
 					MyContent: { name: 'content', type: String },
@@ -288,7 +288,7 @@ describe('Connector', function() {
 
 	it('API-325: should be able to query with unsel', function(callback) {
 
-		var Model = APIBuilder.Model.extend('post', {
+		var Model = Arrow.Model.extend('post', {
 			fields: {
 				myTitle: { name: 'title', type: String },
 				myContent: { name: 'content', type: String }

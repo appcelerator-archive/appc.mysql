@@ -6,8 +6,8 @@
 	"license": "",
 	"framework": "none",
 	"keywords": [
-		"apibuilder",
-		"apibuilder-connector",
+		"arrow",
+		"arrow-connector",
 		"appc-cli-plugin",
 		"mysql"
 	],
