@@ -1,7 +1,7 @@
 var should = require('should'),
 	async = require('async'),
 	_ = require('appcelerator').lodash,
-	Arrow = require('appcelerator').arrow,
+	Arrow = require('arrow.js'),
 	server = new Arrow(),
 	log = Arrow.createLogger({}, { name: 'api-connector-mysql TEST', useConsole: true, level: 'info' }),
 	connector = server.getConnector('appc.mysql'),
@@ -220,6 +220,57 @@ describe('Connector', function() {
 				should(instance2.title).equal(title);
 				should(instance2.content).equal(content);
 				instance.delete(next);
+			});
+
+		});
+
+	});
+
+	it('should be able to retrieve distinct values', function(next) {
+
+		var content = 'Hello world',
+			title = 'Test',
+			object = {
+				content: content,
+				title: title
+			};
+
+		Model.create(object, function(err, instance) {
+			should(err).be.not.ok;
+			should(instance).be.an.Object;
+
+			object.content = "Aloha world";
+			Model.create(object, function(err, instance) {
+				should(err).be.not.ok;
+				should(instance).be.an.Object;
+
+				object.title = 'Test-2';
+				Model.create(object, function(err, instance) {
+					should(err).be.not.ok;
+					should(instance).be.an.Object;
+
+					Model.distinct('title', {}, function(err, values) {
+						should(err).be.not.ok;
+
+						should(values).be.an.Array.with.length(2);
+						should(values).containEql(title);
+						should(values).containEql(object.title);
+
+						Model.distinct('title', {
+							where: {
+								content: "Hello world"
+							}
+						}, function(err, values) {
+							should(err).be.not.ok;
+							should(values).be.an.Array.with.length(1);
+							should(values).containEql(title);
+
+							next();
+						});
+					});
+
+				});
+
 			});
 
 		});
