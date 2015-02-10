@@ -1,6 +1,6 @@
 var should = require('should'),
 	async = require('async'),
-	_ = require('appcelerator').lodash,
+	_ = require('arrow.js').lodash,
 	Arrow = require('arrow.js'),
 	server = new Arrow(),
 	log = Arrow.createLogger({}, { name: 'api-connector-mysql TEST', useConsole: true, level: 'info' }),
