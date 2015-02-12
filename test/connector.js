@@ -1,9 +1,9 @@
 var should = require('should'),
 	async = require('async'),
-	_ = require('arrow.js').lodash,
+	_ = require('lodash'),
 	Arrow = require('arrow.js'),
 	server = new Arrow(),
-	log = Arrow.createLogger({}, { name: 'api-connector-mysql TEST', useConsole: true, level: 'info' }),
+	log = Arrow.createLogger({}, { name: 'mysql TEST', useConsole: true, level: 'info' }),
 	connector = server.getConnector('appc.mysql'),
 	Model;
 
@@ -466,14 +466,15 @@ describe('Connector', function() {
 		Model.deleteAll(function() {
 			Model.create(posts, function(err, coll) {
 				should(err).be.not.ok;
+				should(coll).be.an.object;
 
 				Model.query({ per_page: 1, page: 2 }, function(err, coll2) {
 					should(err).be.not.ok;
-					should(coll2[0].getPrimaryKey()).equal(coll[1].getPrimaryKey());
+					should(coll2.getPrimaryKey()).equal(coll[1].getPrimaryKey());
 
 					Model.query({ skip: 1, limit: 1 }, function(err, coll2) {
 						should(err).be.not.ok;
-						should(coll2[0].getPrimaryKey()).equal(coll[1].getPrimaryKey());
+						should(coll2.getPrimaryKey()).equal(coll[1].getPrimaryKey());
 
 						Model.query({ page: 2 }, function(err, coll2) {
 							should(err).be.not.ok;
@@ -522,7 +523,7 @@ describe('Connector', function() {
 		});
 
 	});
-	
+
 	it('API-377: should be able to query with just skip', function(callback) {
 		Model.query({}, function(err, coll1) {
 			should(err).be.not.ok;
@@ -534,5 +535,5 @@ describe('Connector', function() {
 			});
 		});
 	});
-	
+
 });
