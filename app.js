@@ -2,7 +2,7 @@
  * NOTE: This file is simply for testing this connector and will not
  * be used or packaged with the actual connector when published.
  */
-var Arrow = require('appcelerator').arrow,
+var Arrow = require('arrow.js'),
 	server = new Arrow();
 
 var Post = Arrow.Model.extend('post', {
