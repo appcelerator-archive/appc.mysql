@@ -1,7 +1,7 @@
 var should = require('should'),
 	async = require('async'),
 	_ = require('lodash'),
-	Arrow = require('arrow.js'),
+	Arrow = require('arrow'),
 	server = new Arrow(),
 	log = Arrow.createLogger({}, { name: 'mysql TEST', useConsole: true, level: 'info' }),
 	connector = server.getConnector('appc.mysql'),

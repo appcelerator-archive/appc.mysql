@@ -1,7 +1,7 @@
 {
 	"name": "appc.mysql",
 	"description": "MySQL Connector",
-	"version": "1.0.33",
+	"version": "1.0.34",
 	"author": "Jeff Haynie",
 	"license": "",
 	"framework": "none",
@@ -29,7 +29,7 @@
 		"pkginfo": "^0.3.0"
 	},
 	"devDependencies": {
-		"arrow.js": "*",
+		"arrow": "*",
 		"grunt": "^0.4.5",
 		"grunt-contrib-clean": "^0.6.0",
 		"grunt-contrib-jshint": "^0.10.0",
