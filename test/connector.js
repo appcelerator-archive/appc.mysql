@@ -46,6 +46,7 @@ describe('Connector', function() {
 	it('should create models from tables', function() {
 		var SuperPost = connector.getModel('appc.mysql/super_post');
 		should(SuperPost).be.ok;
+		should(SuperPost.generated).be.true;
 	});
 
 	it('should be able to extend from tables', function(next) {
