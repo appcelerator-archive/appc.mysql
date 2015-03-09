@@ -1,0 +1,6 @@
+{
+  "type": "connector",
+  "group": "arrow",
+  "access": "public",
+  "dependencies": {}
+}
