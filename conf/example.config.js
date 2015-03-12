@@ -10,7 +10,7 @@ module.exports = {
 			host: 'localhost',
 			port: 3306,
 
-			dontGenerateModelsFromSchema: false
+			generateModelsFromSchema: true
 		}
 	}
 };
