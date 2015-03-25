@@ -6,7 +6,9 @@
   "owners": [
     "jhaynie@appcelerator.com",
     "dtoth@appcelerator.com",
-    "tlukasavage@appcelerator.com",
     "mgoff@appcelerator.com"
-  ]
+  ],
+  "assets": {
+    "small_logo": "docs/registry-mysql.png"
+  }
 }
