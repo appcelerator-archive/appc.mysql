@@ -50,12 +50,12 @@ describe('Connector', function() {
 	});
 
 	it('should be able to extend from tables', function(next) {
-		var SupererPost = Arrow.Model.extend('appc.mysql/super_post', 'superer_post', {
+		var SupererPost = connector.getModel('appc.mysql/super_post').extend('superer_post', {
 			fields: {
 				MyTitle: { name: 'title', type: String },
 				MyContent: { name: 'content', type: String }
 			},
-			connector: 'appc.mysql'
+			connector: connector
 		});
 		should(SupererPost).be.ok;
 		should(SupererPost._supermodel).be.ok;
