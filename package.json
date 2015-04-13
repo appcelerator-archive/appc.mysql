@@ -1,7 +1,7 @@
 {
   "name": "appc.mysql",
   "description": "MySQL connector",
-  "version": "1.0.44",
+  "version": "1.0.45",
   "author": "Jeff Haynie",
   "license": "Apache-2.0",
   "framework": "none",
@@ -29,7 +29,7 @@
     "pkginfo": "^0.3.0"
   },
   "devDependencies": {
-    "arrow": "0.3.148",
+    "arrow": "0.3.176",
     "ensure-latest": "^1.0.3",
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^0.6.0",
