@@ -473,7 +473,7 @@ describe('Connector', function() {
 		});
 
 	});
-	
+
 	it('API-377: should be able to query with just skip', function(callback) {
 		Model.query({}, function(err, coll1) {
 			should(err).be.not.ok;
@@ -485,5 +485,11 @@ describe('Connector', function() {
 			});
 		});
 	});
-	
+
+	it('API-731: should escape all fields in MySQL to avoid reserved word collisions', function(callback) {
+		var keys = connector.escapeKeys(Model.payloadKeys());
+		should(keys[0]).equal('`title`');
+		callback();
+	});
+
 });
