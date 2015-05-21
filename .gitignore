@@ -3,3 +3,4 @@ logs
 *.tgz
 conf/local.js
 *.log
+coverage
