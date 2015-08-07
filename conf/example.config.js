@@ -4,11 +4,11 @@ module.exports = {
 			connectionPooling: true,
 			connectionLimit: 10,
 
+			host: 'localhost',
+			port: 3306,
 			database: 'test',
 			user: 'root',
 			password: '',
-			host: 'localhost',
-			port: 3306,
 
 			generateModelsFromSchema: true,
 			modelAutogen: true

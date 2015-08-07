@@ -1,13 +1,14 @@
 var should = require('should'),
 	async = require('async'),
 	_ = require('lodash'),
-	Arrow = require('arrow'),
-	server = new Arrow(),
-	log = Arrow.createLogger({}, {name: 'mysql TEST', useConsole: true, level: 'info'}),
-	connector = server.getConnector('appc.mysql'),
-	Model;
+	base = require('./_base'),
+	Arrow = base.Arrow,
+	server = base.server,
+	connector = base.connector;
 
 describe('Connector', function () {
+
+	var Model;
 
 	before(function (next) {
 		// define your model
@@ -21,71 +22,67 @@ describe('Connector', function () {
 
 		should(Model).be.an.object;
 
-		server.start(function (err) {
-			should(err).be.not.ok;
-
-			async.eachSeries([
-				'DROP TABLE IF EXISTS post',
-				'CREATE TABLE post' +
-				'(' +
-				'	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,' +
-				'	title VARCHAR(255),' +
-				'	content VARCHAR(255)' +
-				')',
-				'DROP TABLE IF EXISTS super_post',
-				'CREATE TABLE super_post' +
-				'(' +
-				'	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,' +
-				'	title VARCHAR(255),' +
-				'	content VARCHAR(255)' +
-				')',
-				'DROP TABLE IF EXISTS employee',
-				'CREATE TABLE employee' +
-				'(' +
-				'	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,' +
-				'	first_name VARCHAR(255),' +
-				'	last_name VARCHAR(255),' +
-				'	email_address VARCHAR(255)' +
-				')',
-				'DROP TABLE IF EXISTS typeTesting',
-				'CREATE TABLE typeTesting' +
-				'(' +
-				'	my_tinyint TINYINT,' +
-				'	my_smallint SMALLINT,' +
-				'	my_mediumint MEDIUMINT,' +
-				'	my_bigint BIGINT,' +
-				'	my_int INT,' +
-				'	my_integer INTEGER,' +
-				'	my_float FLOAT,' +
-				'	my_bit BIT,' +
-				'	my_double DOUBLE,' +
-				'	my_binary BINARY,' +
-				'	my_date DATE,' +
-				'	my_datetime DATETIME,' +
-				'	my_time TIME,' +
-				'	my_year YEAR,' +
-				'	my_varchar VARCHAR(255),' +
-				'	my_char CHAR(5),' +
-				'	my_tinyblob TINYBLOB,' +
-				'	my_blob BLOB,' +
-				'	my_mediumblob MEDIUMBLOB,' +
-				'	my_longblob LONGBLOB,' +
-				'	my_tinytext TINYTEXT,' +
-				'	my_mediumtext MEDIUMTEXT,' +
-				'	my_longtext LONGTEXT,' +
-				'	my_text TEXT' +
-				')'
-			], function (query, callback) {
-				connector._query(query, function (err) {
-					console.error('query failed:');
-					console.error(query);
-					callback(err);
-				}, function (result) {
-					callback();
-				});
-			}, function () {
-				server.ignoreDuplicateModels = true;
-				connector.createModelsFromSchema();
+		async.eachSeries([
+			'DROP TABLE IF EXISTS post',
+			'CREATE TABLE post' +
+			'(' +
+			'	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,' +
+			'	title VARCHAR(255),' +
+			'	content VARCHAR(255)' +
+			')',
+			'DROP TABLE IF EXISTS super_post',
+			'CREATE TABLE super_post' +
+			'(' +
+			'	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,' +
+			'	title VARCHAR(255),' +
+			'	content VARCHAR(255)' +
+			')',
+			'DROP TABLE IF EXISTS employee',
+			'CREATE TABLE employee' +
+			'(' +
+			'	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,' +
+			'	first_name VARCHAR(255),' +
+			'	last_name VARCHAR(255),' +
+			'	email_address VARCHAR(255)' +
+			')',
+			'DROP TABLE IF EXISTS typeTesting',
+			'CREATE TABLE typeTesting' +
+			'(' +
+			'	my_tinyint TINYINT,' +
+			'	my_smallint SMALLINT,' +
+			'	my_mediumint MEDIUMINT,' +
+			'	my_bigint BIGINT,' +
+			'	my_int INT,' +
+			'	my_integer INTEGER,' +
+			'	my_float FLOAT,' +
+			'	my_bit BIT,' +
+			'	my_double DOUBLE,' +
+			'	my_binary BINARY,' +
+			'	my_date DATE,' +
+			'	my_datetime DATETIME,' +
+			'	my_time TIME,' +
+			'	my_year YEAR,' +
+			'	my_varchar VARCHAR(255),' +
+			'	my_char CHAR(5),' +
+			'	my_tinyblob TINYBLOB,' +
+			'	my_blob BLOB,' +
+			'	my_mediumblob MEDIUMBLOB,' +
+			'	my_longblob LONGBLOB,' +
+			'	my_tinytext TINYTEXT,' +
+			'	my_mediumtext MEDIUMTEXT,' +
+			'	my_longtext LONGTEXT,' +
+			'	my_text TEXT' +
+			')'
+		], function (query, callback) {
+			connector._query(query, function (err) {
+				console.error('query failed:');
+				console.error(query);
+				callback(err);
+			}, function (result) {
+				callback();
+			});
+		}, function () {
+			server.reload(function () {
 				next();
 			});
 		});
@@ -94,7 +91,7 @@ describe('Connector', function () {
 	after(function (next) {
 		Model.deleteAll(function (err) {
 			if (err) {
-				log.error(err.message);
+				console.error(err.message);
 			}
 			server.stop();
 			next();
@@ -472,35 +469,39 @@ describe('Connector', function () {
 	it('API-281: should support paging', function (next) {
 
 		var posts = [];
-		for (var i = 1; i <= 30; i++) {
+		for (var i = 1; i <= 15; i++) {
 			posts.push({
 				title: 'Test' + i,
 				content: 'Hello world'
 			});
 		}
 
-		Model.deleteAll(function () {
-			Model.create(posts, function (err, coll) {
+		Model.deleteAll(function (err) {
+			should(err).be.not.ok;
+
+			Model.create(posts, function (err) {
 				should(err).be.not.ok;
-				should(coll).be.an.object;
-
-				Model.query({per_page: 1, page: 2}, function (err, coll2) {
+				Model.findAll(function (err, coll) {
 					should(err).be.not.ok;
-					should(coll2.getPrimaryKey()).equal(coll[1].getPrimaryKey());
+					should(coll).be.an.object;
 
-					Model.query({skip: 1, limit: 1}, function (err, coll2) {
+					Model.query({per_page: 1, page: 2}, function (err, coll2) {
 						should(err).be.not.ok;
 						should(coll2.getPrimaryKey()).equal(coll[1].getPrimaryKey());
 
-						Model.query({page: 2}, function (err, coll2) {
+						Model.query({skip: 1, limit: 1}, function (err, coll2) {
 							should(err).be.not.ok;
-							should(coll2[0].getPrimaryKey()).equal(coll[10].getPrimaryKey());
+							should(coll2.getPrimaryKey()).equal(coll[1].getPrimaryKey());
 
-							Model.deleteAll(next);
+							Model.query({page: 2}, function (err, coll2) {
+								should(err).be.not.ok;
+								should(coll2[0].getPrimaryKey()).equal(coll[10].getPrimaryKey());
+
+								Model.deleteAll(next);
+							});
 						});
 					});
 				});
-
 			});
 		});
 
