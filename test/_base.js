@@ -10,3 +10,7 @@ exports.connector = connector;
 before(function (cb) {
 	server.start(cb);
 });
+
+after(function (cb) {
+	server.stop(cb);
+});

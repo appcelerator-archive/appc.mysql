@@ -93,7 +93,6 @@ describe('Connector', function () {
 			if (err) {
 				console.error(err.message);
 			}
-			server.stop();
 			next();
 		});
 	});
