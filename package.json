@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:appcelerator/appc.mysql.git"
+    "url": "https://github.com/appcelerator/appc.mysql"
   },
   "scripts": {
     "start": "appc run",
@@ -32,7 +32,7 @@
     "pkginfo": "^0.3.0"
   },
   "devDependencies": {
-    "arrow": "^1.2.45",
+    "arrow": "^*",
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-jshint": "^0.10.0",
