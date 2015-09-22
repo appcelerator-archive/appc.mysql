@@ -72,11 +72,14 @@ describe('Connector', function () {
 			'	my_mediumtext MEDIUMTEXT,' +
 			'	my_longtext LONGTEXT,' +
 			'	my_text TEXT' +
-			')'
+			')',
+			'DROP VIEW IF EXISTS hyphens',
+			'CREATE VIEW hyphens AS SELECT title, content, CONCAT(title,\' - \',content) AS hyphenated FROM post'
 		], function (query, callback) {
 			connector._query(query, function (err) {
 				console.error('query failed:');
 				console.error(query);
+				console.error(err);
 				callback(err);
 			}, function (result) {
 				callback();
@@ -109,6 +112,9 @@ describe('Connector', function () {
 		var SuperPost = connector.getModel('appc.mysql/super_post');
 		should(SuperPost).be.ok;
 		should(SuperPost.generated).be.true;
+		var Names = connector.getModel('appc.mysql/hyphens');
+		should(Names).be.ok;
+		should(Names.generated).be.true;
 	});
 
 	it('should be able to extend from tables', function (next) {
@@ -547,6 +553,23 @@ describe('Connector', function () {
 			Model.query({skip: 1}, function (err, coll2) {
 				should(err).be.not.ok;
 				should(coll2).be.ok;
+				callback();
+			});
+		});
+	});
+
+	it('API-1043: should be able to query through views', function (callback) {
+		var Names = connector.getModel('appc.mysql/hyphens'),
+			title = 'Test',
+			content = 'Hello world',
+			object = {
+				title: title,
+				content: content
+			};
+		Model.create(object, function (err, instance) {
+			Names.findAll(function (err, coll1) {
+				should(err).be.not.ok;
+				should(coll1).be.ok;
 				callback();
 			});
 		});
