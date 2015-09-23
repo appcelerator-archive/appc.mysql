@@ -22,7 +22,7 @@
 	},
 	"scripts": {
 		"start": "appc run",
-		"test": "./node_modules/nodemon/bin/nodemon.js --exec 'grunt' -e js,json"
+		"test": "grunt"
 	},
 	"private": true,
 	"dependencies": {
