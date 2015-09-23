@@ -1,45 +1,46 @@
 {
-  "name": "appc.mysql",
-  "description": "MySQL connector",
-  "version": "1.1.4",
-  "author": "Jeff Haynie",
-  "maintainers": [
-    "Jeff Haynie <jhaynie@appcelerator.com>",
-    "Dawson Toth <dtoth@appcelerator.com>"
-  ],
-  "license": "Apache-2.0",
-  "framework": "none",
-  "keywords": [
-    "arrow",
-    "arrow-connector",
-    "appc-cli-plugin",
-    "appcelerator",
-    "mysql"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/appcelerator/appc.mysql"
-  },
-  "scripts": {
-    "start": "appc run",
-    "test": "./node_modules/nodemon/bin/nodemon.js --exec 'grunt' -e js,json"
-  },
-  "private": true,
-  "dependencies": {
-    "async": "^0.9.0",
-    "lodash": "^3.10.1",
-    "mysql": "^2.5.0",
-    "pkginfo": "^0.3.0"
-  },
-  "devDependencies": {
-    "arrow": "^*",
-    "grunt": "^0.4.5",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-kahvesi-latest": "^0.2.5",
-    "grunt-mocha-test": "^0.12.0",
-    "mocha": "^1.21.4",
-    "nodemon": "^1.3.8",
-    "should": "^4.0.4"
-  }
+	"name": "appc.mysql",
+	"description": "MySQL connector",
+	"version": "1.1.5",
+	"author": "Jeff Haynie",
+	"maintainers": [
+		"Jeff Haynie <jhaynie@appcelerator.com>",
+		"Dawson Toth <dtoth@appcelerator.com>"
+	],
+	"license": "Apache-2.0",
+	"framework": "none",
+	"keywords": [
+		"arrow",
+		"arrow-connector",
+		"appc-cli-plugin",
+		"appcelerator",
+		"mysql"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/appcelerator/appc.mysql"
+	},
+	"scripts": {
+		"start": "appc run",
+		"test": "./node_modules/nodemon/bin/nodemon.js --exec 'grunt' -e js,json"
+	},
+	"private": true,
+	"dependencies": {
+		"async": "^0.9.0",
+		"lodash": "^3.10.1",
+		"mysql": "^2.5.0",
+		"pkginfo": "^0.3.0",
+		"semver": "^5.0.3"
+	},
+	"devDependencies": {
+		"arrow": "^*",
+		"grunt": "^0.4.5",
+		"grunt-contrib-clean": "^0.6.0",
+		"grunt-contrib-jshint": "^0.10.0",
+		"grunt-kahvesi-latest": "^0.2.5",
+		"grunt-mocha-test": "^0.12.0",
+		"mocha": "^1.21.4",
+		"nodemon": "^1.3.8",
+		"should": "^4.0.4"
+	}
 }
