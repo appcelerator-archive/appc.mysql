@@ -295,6 +295,57 @@ describe('Connector', function () {
 
 	});
 
+	it('should be able to retrieve distinct values', function (next) {
+
+		var content = 'Hello world',
+			title = 'Test',
+			object = {
+				content: content,
+				title: title
+			};
+
+		Model.create(object, function (err, instance) {
+			should(err).be.not.ok;
+			should(instance).be.an.Object;
+
+			object.content = 'Aloha world';
+			Model.create(object, function (err, instance) {
+				should(err).be.not.ok;
+				should(instance).be.an.Object;
+
+				object.title = 'Test-2';
+				Model.create(object, function (err, instance) {
+					should(err).be.not.ok;
+					should(instance).be.an.Object;
+
+					Model.distinct('title', {}, function (err, values) {
+						should(err).be.not.ok;
+
+						should(values).be.an.Array.with.length(2);
+						should(values).containEql(title);
+						should(values).containEql(object.title);
+
+						Model.distinct('title', {
+							where: {
+								content: 'Hello world'
+							}
+						}, function (err, values) {
+							should(err).be.not.ok;
+							should(values).be.an.Array.with.length(1);
+							should(values).containEql(title);
+
+							next();
+						});
+					});
+
+				});
+
+			});
+
+		});
+
+	});
+
 	it('should be able to find an instance by field value', function (next) {
 
 		var title = 'Test',
