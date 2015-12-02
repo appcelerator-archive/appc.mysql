@@ -687,7 +687,7 @@ describe('Connector', function () {
 			should(instance.my_longtext).equal('19');
 			should(instance.my_text).equal('20');
 
-			typeTesting.findOne('this_will_not_work', function (err, result) {
+			typeTesting.findByID('this_will_not_work', function (err, result) {
 				should(err.message).containEql("can't find primary key column");
 
 				typeTesting.findAll(function (err, results) {
