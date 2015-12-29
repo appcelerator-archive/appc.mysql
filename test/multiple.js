@@ -18,9 +18,7 @@ describe('Multiple', function () {
 
 		for (var i = 1; i <= 4; i++) {
 			tasks = tasks.concat([
-				'DROP DATABASE IF EXISTS auto_test_' + i,
-				'CREATE DATABASE auto_test_' + i,
-				'CREATE TABLE auto_test_' + i + '.users' +
+				'CREATE TABLE ' + baseConfig.database + '.users' + i +
 				'(' +
 				'	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,' +
 				'	name VARCHAR(255),' +
@@ -29,7 +27,7 @@ describe('Multiple', function () {
 			]);
 
 			testConnectors['db.' + i] = {
-				database: 'auto_test_' + i,
+				database: baseConfig.database,
 
 				connector: 'appc.mysql',
 				host: baseConfig.host,
@@ -62,7 +60,7 @@ describe('Multiple', function () {
 
 	it('should create models from tables', function () {
 		for (var i = 1; i <= 4; i++) {
-			var Model = ourServer.getModel('db.' + i + '/users');
+			var Model = ourServer.getModel('db.' + i + '/users' + i);
 			should(Model).be.ok;
 			should(Model.generated).be.true;
 		}

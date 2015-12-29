@@ -1,16 +1,7 @@
+// jscs:disable jsDoc
 var _ = require('lodash');
 
-var goodConfig = {
-	connectionPooling: true,
-	connectionLimit: 10,
-	host: 'localhost',
-	port: 3306,
-	database: 'test',
-	user: 'root',
-	password: 'root',
-	generateModelsFromSchema: true,
-	modelAutogen: true
-};
+var goodConfig = require('../../conf/local').connectors['appc.mysql'];
 
 exports.connect = {
 	goodConfig: goodConfig,

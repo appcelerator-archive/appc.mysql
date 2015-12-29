@@ -1,3 +1,4 @@
+// jscs:disable jsDoc
 var should = require('should');
 
 exports.create = {

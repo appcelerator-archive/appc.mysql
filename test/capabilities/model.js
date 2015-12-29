@@ -1,3 +1,4 @@
+// jscs:disable jsDoc
 var Arrow = require('arrow');
 
 exports.model = Arrow.Model.extend('post', {

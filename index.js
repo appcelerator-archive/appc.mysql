@@ -6,12 +6,12 @@ if (module.id === '.') {
 	var fs = require('fs'),
 		path = require('path'),
 		appjs = path.join(__dirname, 'app.js');
-	if (fs.existsSync(appjs)){
+	if (fs.existsSync(appjs)) {
 		try {
 			require(appjs);
 		}
 		catch (E) {
-			console.error(E)
+			console.error(E);
 		}
 	}
 }

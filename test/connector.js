@@ -1,3 +1,4 @@
+// jscs:disable jsDoc
 var should = require('should'),
 	async = require('async'),
 	_ = require('lodash'),
@@ -712,7 +713,7 @@ describe('Connector', function () {
 			should(instance.my_text).equal('20');
 
 			typeTesting.findOne('this_will_not_work', function (err, result) {
-				should(err.message).containEql("can't find primary key column");
+				should(err.message).containEql('can\'t find primary key column');
 
 				typeTesting.findAll(function (err, results) {
 					should(err).be.not.ok;
@@ -720,10 +721,10 @@ describe('Connector', function () {
 
 					results[0].set('my_text', '20v2');
 					results[0].save(function (err) {
-						should(err.message).containEql("can't find primary key column");
+						should(err.message).containEql('can\'t find primary key column');
 
 						results[0].remove(function (err) {
-							should(err.message).containEql("can't find primary key column");
+							should(err.message).containEql('can\'t find primary key column');
 							callback();
 						});
 					});

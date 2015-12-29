@@ -1,3 +1,4 @@
+// jscs:disable jsDoc
 var should = require('should');
 
 exports.save = {
@@ -10,7 +11,6 @@ exports.save = {
 		content: 'Tooth'
 	},
 	check: function (result) {
-		// TODO: Check your results.
 		should(result.id).be.ok;
 		should(result.title).equal('Dawson');
 		should(result.content).equal('Tooth');
