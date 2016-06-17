@@ -37,6 +37,13 @@ describe('Connector', function () {
 			'	title VARCHAR(255),' +
 			'	content VARCHAR(255)' +
 			')',
+			'DROP TABLE IF EXISTS conditionTesting',
+			'CREATE TABLE conditionTesting' +
+			'(' +
+			'	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,' +
+			'	title VARCHAR(255),' +
+			'	numWords INT(11)' +
+			')',
 			'DROP TABLE IF EXISTS employee',
 			'CREATE TABLE employee' +
 			'(' +
@@ -505,6 +512,54 @@ describe('Connector', function () {
 			});
 		});
 
+	});
+
+	it('API-1257: should be able to query with conditions $gt, $lt, etc', function (next) {
+		var conModel = connector.getModel('appc.mysql/conditionTesting');
+		var conditions = [
+			{
+				title: 'Test1',
+				numWords: 1
+			},
+			{
+				title: 'Test2',
+				numWords: 3
+			},
+			{
+				title: 'Test3',
+				numWords: 3
+			}
+		];
+		conModel.deleteAll(function () {
+			conModel.create(conditions, function (err, coll) {
+				should(err).be.not.ok;
+				conModel.query({numWords: {$lt: 3}}, function (err, col2) {
+					should(err).be.not.ok;
+					should(col2).have.lengthOf(1);
+					conModel.query({numWords: {$lte: 3}}, function (err, col3) {
+						should(err).be.not.ok;
+						should(col3).have.lengthOf(3);
+						conModel.query({numWords: {$gt: 1}}, function (err, col4) {
+							should(err).be.not.ok;
+							should(col4).have.lengthOf(2);
+							conModel.query({numWords: {$gte: 1}}, function (err, col5) {
+								should(err).be.not.ok;
+								should(col5).have.lengthOf(3);
+								conModel.query({numWords: {$ne: 3}}, function (err, col6) {
+									should(err).be.not.ok;
+									should(col6).have.lengthOf(1);
+									conModel.query({numWords: 3}, function (err, col7) {
+										should(err).be.not.ok;
+										should(col7).have.lengthOf(2);
+										conModel.deleteAll(next);
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
 	});
 
 	it('API-337: should be able to query with order', function (next) {

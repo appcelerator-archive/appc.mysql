@@ -1,11 +1,12 @@
 {
 	"name": "appc.mysql",
 	"description": "MySQL connector",
-	"version": "1.1.9",
+	"version": "1.2.0",
 	"author": "Jeff Haynie",
 	"maintainers": [
 		"Jeff Haynie <jhaynie@appcelerator.com>",
-		"Dawson Toth <dtoth@appcelerator.com>"
+		"Dawson Toth <dtoth@appcelerator.com>",
+		"Chee Kiat Ng <cng@appcelerator.com"
 	],
 	"license": "Apache-2.0",
 	"framework": "none",
