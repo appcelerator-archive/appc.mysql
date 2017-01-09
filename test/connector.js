@@ -141,16 +141,16 @@ describe('Connector', function () {
 	});
 
 	it('should create models from tables', function () {
-		var SuperPost = connector.getModel('appc.mysql/super_post');
+		var SuperPost = connector.getModel('appc.mysql.1/super_post');
 		should(SuperPost).be.ok;
 		should(SuperPost.generated).be.true;
-		var Names = connector.getModel('appc.mysql/hyphens');
+		var Names = connector.getModel('appc.mysql.1/hyphens');
 		should(Names).be.ok;
 		should(Names.generated).be.true;
 	});
 
 	it('should be able to extend from tables', function (next) {
-		var SupererPost = connector.getModel('appc.mysql/super_post').extend('superer_post', {
+		var SupererPost = connector.getModel('appc.mysql.1/super_post').extend('superer_post', {
 			fields: {
 				MyTitle: {name: 'title', type: String},
 				MyContent: {name: 'content', type: String}
@@ -515,7 +515,7 @@ describe('Connector', function () {
 	});
 
 	it('API-1257: should be able to query with conditions $gt, $lt, etc', function (next) {
-		var conModel = connector.getModel('appc.mysql/conditionTesting');
+		var conModel = connector.getModel('appc.mysql.1/conditionTesting');
 		var conditions = [
 			{
 				title: 'Test1',
@@ -690,7 +690,7 @@ describe('Connector', function () {
 	});
 
 	it('API-1043: should be able to query through views', function (callback) {
-		var Names = connector.getModel('appc.mysql/hyphens'),
+		var Names = connector.getModel('appc.mysql.1/hyphens'),
 			title = 'Test',
 			content = 'Hello world',
 			object = {
@@ -713,7 +713,7 @@ describe('Connector', function () {
 	});
 
 	it('should support different field types', function (callback) {
-		var typeTesting = connector.getModel('appc.mysql/typeTesting');
+		var typeTesting = connector.getModel('appc.mysql.1/typeTesting');
 		typeTesting.create({
 			my_tinyint: 1,
 			my_smallint: 2,
@@ -785,6 +785,39 @@ describe('Connector', function () {
 					});
 				});
 			});
+		});
+	});
+
+	it('should handles transaction errors', function (next) {
+		var transactionsConnector = server.getConnector('appc.mysql.2');
+		var getConnectionCached = transactionsConnector.getConnection;
+
+		// Returns connection stub
+		transactionsConnector.getConnection = function (callback) {
+			callback(null, {
+				beginTransaction: function (cb) {
+					cb(null);
+				},
+				rollback: function (cb) {
+					cb(null);
+				},
+				release: function () {},
+				query: function (query, data, cb) {
+					cb({
+						message: 'Error!'
+					});
+				}
+			});
+		};
+
+		transactionsConnector._query('SELECT * from post', function (err) {
+			console.error('query failed:');
+			should(err.message).containEql('Error!');
+			transactionsConnector.getConnection = getConnectionCached;
+			next();
+		}, function () {
+			transactionsConnector.getConnection = getConnectionCached;
+			next('Transaction error callback not caled!');
 		});
 	});
 

@@ -21,6 +21,7 @@ module.exports = {
 		'appc.mysql': {
 			connectionPooling: true,
 			connectionLimit: 10,
+			queryTransactions: false,
 
 			database: 'test',
 			user: 'root',
