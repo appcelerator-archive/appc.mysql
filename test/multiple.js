@@ -13,11 +13,12 @@ describe('Multiple', function () {
 	before(function (next) {
 		originalConnectors = server.config.connectors;
 		var tasks = [],
-			baseConfig = originalConnectors['appc.mysql'],
+			baseConfig = originalConnectors['appc.mysql.1'],
 			testConnectors = {};
 
 		for (var i = 1; i <= 4; i++) {
 			tasks = tasks.concat([
+				'DROP TABLE IF EXISTS ' + baseConfig.database + '.users' + i,
 				'CREATE TABLE ' + baseConfig.database + '.users' + i +
 				'(' +
 				'	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,' +

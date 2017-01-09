@@ -3,6 +3,7 @@ module.exports = {
 		'appc.mysql': {
 			connectionPooling: true,
 			connectionLimit: 10,
+			queryTransactions: false,
 
 			host: 'localhost',
 			port: 3306,
