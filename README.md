@@ -5,7 +5,7 @@ This is an Arrow connector to MySQL.
 ## Installation
 
 ```bash
-$ appc install connector/appc.mysql --save
+$ appc install connector/appc.mysql
 ```
 
 A configuration file is generated for you. By default we use a host of `localhost`, a user of `root` and an
