@@ -8,7 +8,7 @@ timestamps {
 		}
 
 		stage('Configuration') {
-			sh "echo \"module.exports = { logLevel: 'error', connectors: { 'appc.mysql': { host: 'sql11.freemysqlhosting.net', database: 'sql11160473', user: 'sql11160473', password: 'ZeF5BhEnek', modelAutogen: true, generateModelsFromSchema: true}} };\" > conf/local.js"
+			sh "echo \"module.exports = { logLevel: 'error', connectors: { 'appc.mysql': { host: 'db4free.net', database: 'arrowtest', user: 'arrowtest', password: 'mmpResearch6', modelAutogen: true, generateModelsFromSchema: true}} };\" > conf/local.js"
 		}
 
 		buildConnector {
