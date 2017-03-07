@@ -4,3 +4,10 @@ logs
 conf/local.js
 *.log
 coverage
+
+# nyc test coverage
+.nyc_output
+
+# Custom
+.DS_Store
+.vscode
