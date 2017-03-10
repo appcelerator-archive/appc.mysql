@@ -4,3 +4,7 @@ logs
 conf/local.js
 *.log
 coverage
+.vscode
+.nyc_output
+.DS_Store
+
