@@ -3,8 +3,11 @@ logs
 *.tgz
 conf/local.js
 *.log
-coverage
-.vscode
-.nyc_output
-.DS_Store
 
+# nyc test coverage
+.nyc_output
+
+# Custom
+.DS_Store
+.vscode
+coverage

@@ -1,15 +1,11 @@
 const test = require('tap').test
 const server = require('./../server')
 var ARROW
-var CONNECTOR
 
 test('### Start Arrow ###', function (t) {
-  
   server()
     .then((inst) => {
-
       ARROW = inst
-      CONNECTOR = ARROW.getConnector('appc.mysql')
       t.ok(ARROW, 'Arrow has been started')
       t.end()
     })
@@ -43,7 +39,6 @@ test('### Test Model Book ###', function (t) {
 })
 
 test('### Stop Arrow ###', function (t) {
-
   ARROW.stop(function () {
     t.pass('Arrow has been stopped!')
     t.end()
