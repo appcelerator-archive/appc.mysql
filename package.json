@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "appc run",
-    "lint": "standard --fix | snazzy",
+    "lint": "standard --fix",
     "check-security": "nsp check || true",
     "check-deps": "retire || true",
     "clean": "rimraf ./tmp",
