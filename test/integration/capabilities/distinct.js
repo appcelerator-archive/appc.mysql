@@ -1,8 +1,8 @@
 // jscs:disable jsDoc
-var should = require('should');
+var should = require('should')
 
 exports.distinct = {
-	insert: [
+  insert: [
 		{title: 'Rick Blalock'},
 		{title: 'Jeff Haynie'},
 		{title: 'Jeff Haynie'},
@@ -14,13 +14,13 @@ exports.distinct = {
 		{title: 'Chris Barber'},
 		{title: 'Chris Barber'},
 		{title: 'Nolan Wright'}
-	],
-	distinct: 'title',
-	check: function (results) {
-		should(results.length).equal(4);
-		should(results).containEql('Rick Blalock');
-		should(results).containEql('Jeff Haynie');
-		should(results).containEql('Chris Barber');
-		should(results).containEql('Nolan Wright');
-	}
-};
+  ],
+  distinct: 'title',
+  check: function (results) {
+    should(results.length).equal(4)
+    should(results).containEql('Rick Blalock')
+    should(results).containEql('Jeff Haynie')
+    should(results).containEql('Chris Barber')
+    should(results).containEql('Nolan Wright')
+  }
+}
