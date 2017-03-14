@@ -7,217 +7,208 @@ var ARROW
 var CONNECTOR
 
 test('### Start Arrow ###', function (t) {
-
-    server()
+  server()
         .then((inst) => {
-
-            ARROW = inst
-            CONNECTOR = ARROW.getConnector('appc.mysql')
-            t.ok(ARROW, 'Arrow has been started')
-            t.end()
+          ARROW = inst
+          CONNECTOR = ARROW.getConnector('appc.mysql')
+          t.ok(ARROW, 'Arrow has been started')
+          t.end()
         })
         .catch((err) => {
-            t.threw(err)
+          t.threw(err)
         })
 })
 
 test('### Test Save Error Case ###', sinon.test(function (t) {
     // Data
-    const Model = ARROW.getModel('Posts')
-    const instance = {
-        toPayload: function () {
-            return ['Some Title', 'Some Content']
-        },
-        getPrimaryKey: function () {
-            return '7'
-        }
+  const Model = ARROW.getModel('Posts')
+  const instance = {
+    toPayload: function () {
+      return ['Some Title', 'Some Content']
+    },
+    getPrimaryKey: function () {
+      return '7'
     }
+  }
 
     // Stubs & spies
-    const getTableNameStub = this.stub(CONNECTOR, 'getTableName', function (Model) {
-        return 'post'
-    })
+  const getTableNameStub = this.stub(CONNECTOR, 'getTableName', function (Model) {
+    return 'post'
+  })
 
-    const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn', function (Model) {
-        return undefined
-    })
+  const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn', function (Model) {
+    return undefined
+  })
 
-    const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys', function (columns) {
-        return columns
-    })
+  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys', function (columns) {
+    return columns
+  })
 
-    const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns', function (table, paylod) {
-        var result = []
-        result.push('title')
-        result.push('content')
-        return result
-    })
+  const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns', function (table, paylod) {
+    var result = []
+    result.push('title')
+    result.push('content')
+    return result
+  })
 
-    function cb() { }
+  function cb () { }
 
-    const cbSpy = this.spy(cb)
+  const cbSpy = this.spy(cb)
 
     // Execution
-    saveMethod.bind(CONNECTOR, Model, instance, cbSpy)()
+  saveMethod.bind(CONNECTOR, Model, instance, cbSpy)()
 
     // Test
-    t.ok(getTableNameStub.calledOnce)
-    t.ok(getTableNameStub.calledWith(Model))
-    t.ok(getPrimaryKeyColumnStub.calledOnce)
-    t.ok(getPrimaryKeyColumnStub.calledWith(Model))
-    t.ok(fetchColumnsStub.calledOnce)
-    t.ok(fetchColumnsStub.calledWith('post', ['Some Title', 'Some Content']))
-    t.ok(escapeKeysStub.calledOnce)
-    t.ok(escapeKeysStub.calledWith(['title', 'content']))
-    t.ok(cbSpy.calledOnce)
-    t.ok(cbSpy.args[0] !== null)
-    var error = cbSpy.args[0][0]
-    t.ok(error.message === "can't find primary key column for post")
+  t.ok(getTableNameStub.calledOnce)
+  t.ok(getTableNameStub.calledWith(Model))
+  t.ok(getPrimaryKeyColumnStub.calledOnce)
+  t.ok(getPrimaryKeyColumnStub.calledWith(Model))
+  t.ok(fetchColumnsStub.calledOnce)
+  t.ok(fetchColumnsStub.calledWith('post', ['Some Title', 'Some Content']))
+  t.ok(escapeKeysStub.calledOnce)
+  t.ok(escapeKeysStub.calledWith(['title', 'content']))
+  t.ok(cbSpy.calledOnce)
+  t.ok(cbSpy.args[0] !== null)
+  var error = cbSpy.args[0][0]
+  t.ok(error.message === "can't find primary key column for post")
 
-    t.end()
+  t.end()
 }))
 
 test('### Test Save Valid Data ###', sinon.test(function (t) {
     // Data
-    const Model = ARROW.getModel('Posts')
-    const instance = {
-        toPayload: function () {
-            return ['Some Title', 'Some Content']
-        },
-        getPrimaryKey: function () {
-            return '7'
-        }
+  const Model = ARROW.getModel('Posts')
+  const instance = {
+    toPayload: function () {
+      return ['Some Title', 'Some Content']
+    },
+    getPrimaryKey: function () {
+      return '7'
     }
+  }
 
     // Stubs & spies
-    const getTableNameStub = this.stub(CONNECTOR, 'getTableName', function (Model) {
-        return 'post'
-    })
+  const getTableNameStub = this.stub(CONNECTOR, 'getTableName', function (Model) {
+    return 'post'
+  })
 
-    const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn', function (Model) {
-        return 7
-    })
+  const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn', function (Model) {
+    return 7
+  })
 
-    const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys', function (columns) {
-        return columns
-    })
+  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys', function (columns) {
+    return columns
+  })
 
-    const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns', function (table, paylod) {
-        var result = []
-        result.push('title')
-        result.push('content')
-        return result
-    })
+  const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns', function (table, paylod) {
+    var result = []
+    result.push('title')
+    result.push('content')
+    return result
+  })
 
-    const lodashValuesStub = this.stub(lodash, 'values', function (payload) { return ['Some Title', 'Some Content'] })
+  const lodashValuesStub = this.stub(lodash, 'values', function (payload) { return ['Some Title', 'Some Content'] })
 
-    function cb(err, instance) { }
+  function cb (errParameter, instance) { }
+  const cbSpy = this.spy(cb)
 
-    const cbSpy = this.spy(cb)
-
-    function executor(result) { }
-
-    const queryStub = this.stub(CONNECTOR, '_query', function (query, values, cbSpy, executor) {
-        executor( { affectedRows : 1 } )
-    })
+  const queryStub = this.stub(CONNECTOR, '_query', function (query, values, cbSpy, executor) {
+    executor({ affectedRows: 1 })
+  })
 
     // Execution
-    saveMethod.bind(CONNECTOR, Model, instance, cbSpy)()
+  saveMethod.bind(CONNECTOR, Model, instance, cbSpy)()
 
     // Test
-    const expectedQueryString = 'UPDATE post SET title = ?,content = ? WHERE 7 = ?'
+  const expectedQueryString = 'UPDATE post SET title = ?,content = ? WHERE 7 = ?'
 
-    t.ok(getTableNameStub.calledOnce)
-    t.ok(getTableNameStub.calledWith(Model))
-    t.ok(getPrimaryKeyColumnStub.calledOnce)
-    t.ok(getPrimaryKeyColumnStub.calledWith(Model))
-    t.ok(fetchColumnsStub.calledOnce)
-    t.ok(fetchColumnsStub.calledWith('post', ['Some Title', 'Some Content']))
-    t.ok(escapeKeysStub.calledOnce)
-    t.ok(escapeKeysStub.calledWith(['title', 'content']))
-    t.ok(lodashValuesStub.calledOnce)
-    t.ok(lodashValuesStub.calledWith(['Some Title', 'Some Content']))
-    t.ok(queryStub.calledOnce)
-    t.ok(queryStub.calledWith(expectedQueryString, ["Some Title", "Some Content", "7"], cbSpy))
-    t.ok(cbSpy.calledOnce)
-    t.ok(cbSpy.args[0][0] === null)
-    t.ok(cbSpy.calledWith(null, instance))
+  t.ok(getTableNameStub.calledOnce)
+  t.ok(getTableNameStub.calledWith(Model))
+  t.ok(getPrimaryKeyColumnStub.calledOnce)
+  t.ok(getPrimaryKeyColumnStub.calledWith(Model))
+  t.ok(fetchColumnsStub.calledOnce)
+  t.ok(fetchColumnsStub.calledWith('post', ['Some Title', 'Some Content']))
+  t.ok(escapeKeysStub.calledOnce)
+  t.ok(escapeKeysStub.calledWith(['title', 'content']))
+  t.ok(lodashValuesStub.calledOnce)
+  t.ok(lodashValuesStub.calledWith(['Some Title', 'Some Content']))
+  t.ok(queryStub.calledOnce)
+  t.ok(queryStub.calledWith(expectedQueryString, ['Some Title', 'Some Content', '7'], cbSpy))
+  t.ok(cbSpy.calledOnce)
+  t.ok(cbSpy.args[0][0] === null)
+  t.ok(cbSpy.calledWith(null, instance))
 
-    t.end()
+  t.end()
 }))
 
 test('### Test Save Valid Data nothing to save ###', sinon.test(function (t) {
     // Data
-    const Model = ARROW.getModel('Posts')
-    const instance = {
-        toPayload: function () {
-            return ['Some Title', 'Some Content']
-        },
-        getPrimaryKey: function () {
-            return '7'
-        }
+  const Model = ARROW.getModel('Posts')
+  const instance = {
+    toPayload: function () {
+      return ['Some Title', 'Some Content']
+    },
+    getPrimaryKey: function () {
+      return '7'
     }
+  }
 
     // Stubs & spies
-    const getTableNameStub = this.stub(CONNECTOR, 'getTableName', function (Model) {
-        return 'post'
-    })
+  const getTableNameStub = this.stub(CONNECTOR, 'getTableName', function (Model) {
+    return 'post'
+  })
 
-    const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn', function (Model) {
-        return 7
-    })
+  const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn', function (Model) {
+    return 7
+  })
 
-    const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys', function (columns) {
-        return columns
-    })
+  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys', function (columns) {
+    return columns
+  })
 
-    const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns', function (table, paylod) {
-        var result = []
-        result.push('title')
-        result.push('content')
-        return result
-    })
+  const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns', function (table, paylod) {
+    var result = []
+    result.push('title')
+    result.push('content')
+    return result
+  })
 
-    const lodashValuesStub = this.stub(lodash, 'values', function (payload) { return ['Some Title', 'Some Content'] })
+  const lodashValuesStub = this.stub(lodash, 'values', function (payload) { return ['Some Title', 'Some Content'] })
 
-    function cb(err, instance) { }
+  function cb (errParameter, instance) { }
+  const cbSpy = this.spy(cb)
 
-    const cbSpy = this.spy(cb)
-
-    function executor(result) { }
-
-    const queryStub = this.stub(CONNECTOR, '_query', function (query, values, cbSpy, executor) {
-        executor( undefined )
-    })
+  const queryStub = this.stub(CONNECTOR, '_query', function (query, values, cbSpy, executor) {
+    executor(undefined)
+  })
 
     // Execution
-    saveMethod.bind(CONNECTOR, Model, instance, cbSpy)()
+  saveMethod.bind(CONNECTOR, Model, instance, cbSpy)()
 
     // Test
-    const expectedQueryString = 'UPDATE post SET title = ?,content = ? WHERE 7 = ?'
+  const expectedQueryString = 'UPDATE post SET title = ?,content = ? WHERE 7 = ?'
 
-    t.ok(getTableNameStub.calledOnce)
-    t.ok(getTableNameStub.calledWith(Model))
-    t.ok(getPrimaryKeyColumnStub.calledOnce)
-    t.ok(getPrimaryKeyColumnStub.calledWith(Model))
-    t.ok(fetchColumnsStub.calledOnce)
-    t.ok(fetchColumnsStub.calledWith('post', ['Some Title', 'Some Content']))
-    t.ok(escapeKeysStub.calledOnce)
-    t.ok(escapeKeysStub.calledWith(['title', 'content']))
-    t.ok(lodashValuesStub.calledOnce)
-    t.ok(lodashValuesStub.calledWith(['Some Title', 'Some Content']))
-    t.ok(queryStub.calledOnce)
-    t.ok(queryStub.calledWith(expectedQueryString, ["Some Title", "Some Content", "7"], cbSpy))
-    t.ok(cbSpy.calledOnce)
-    t.ok(cbSpy.args[0].length === 0)
+  t.ok(getTableNameStub.calledOnce)
+  t.ok(getTableNameStub.calledWith(Model))
+  t.ok(getPrimaryKeyColumnStub.calledOnce)
+  t.ok(getPrimaryKeyColumnStub.calledWith(Model))
+  t.ok(fetchColumnsStub.calledOnce)
+  t.ok(fetchColumnsStub.calledWith('post', ['Some Title', 'Some Content']))
+  t.ok(escapeKeysStub.calledOnce)
+  t.ok(escapeKeysStub.calledWith(['title', 'content']))
+  t.ok(lodashValuesStub.calledOnce)
+  t.ok(lodashValuesStub.calledWith(['Some Title', 'Some Content']))
+  t.ok(queryStub.calledOnce)
+  t.ok(queryStub.calledWith(expectedQueryString, ['Some Title', 'Some Content', '7'], cbSpy))
+  t.ok(cbSpy.calledOnce)
+  t.ok(cbSpy.args[0].length === 0)
 
-    t.end()
+  t.end()
 }))
 
 test('### Stop Arrow ###', function (t) {
-
-    ARROW.stop(function () {
-        t.pass('Arrow has been stopped!')
-        t.end()
-    })
+  ARROW.stop(function () {
+    t.pass('Arrow has been stopped!')
+    t.end()
+  })
 })
