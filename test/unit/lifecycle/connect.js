@@ -1,17 +1,10 @@
 const test = require('tap').test
 const sinon = require('sinon')
 const connectMethod = require('../../../lib/lifecycle/connect')['connect']
-const mockery = require('mockery')
-
-// Init mockery
-mockery.enable({
-    warnOnReplace: false,
-    warnOnUnregistered: false
-})
 
 test('### Test Connect method with connection pooling set to true error case no error code ###', sinon.test(function (t) {
 
-    // Mocks, stubs & spies
+    // Stubs & spies
     const context = {
         config: {
             connection_pooling: true
@@ -19,24 +12,19 @@ test('### Test Connect method with connection pooling set to true error case no 
     }
 
     const err = new Error()
-    function cb(err, connection) { }
-    const cbSpy = this.spy(cb)
-
-    function anonymousFunc(cbSpy) {
-        cbSpy(err)
+    function getConnection(cb) {
+        cb(err)
     }
 
-    const anonymousFuncSpy = this.spy(anonymousFunc)
+    const getConnectionSpy = this.spy(getConnection)
 
     const mysql = require('../../../node_modules/mysql')
 
     var createPoolStub = this.stub(mysql, 'createPool', function (config) {
         return {
-            getConnection: anonymousFuncSpy
+            getConnection: getConnectionSpy
         }
     })
-
-    mockery.registerMock('../../node_modules/mysql', createPoolStub)
 
     function next(err) { }
     const nextSpy = this.spy(next)
@@ -47,7 +35,7 @@ test('### Test Connect method with connection pooling set to true error case no 
     // Test
     t.ok(createPoolStub.calledOnce)
     t.ok(createPoolStub.calledWithExactly(context.config))
-    t.ok(anonymousFuncSpy.calledOnce)
+    t.ok(getConnectionSpy.calledOnce)
     t.ok(nextSpy.calledOnce)
     t.ok(nextSpy.calledWithExactly(err))
 
@@ -56,7 +44,7 @@ test('### Test Connect method with connection pooling set to true error case no 
 
 test('### Test Connect method with connection pooling set to true error case with error code ###', sinon.test(function (t) {
     
-    // Mocks, stubs & spies
+    // Stubs & spies
     const context = {
         config: {
             connection_pooling: true
@@ -65,23 +53,19 @@ test('### Test Connect method with connection pooling set to true error case wit
 
     const err = new Error()
     err.code = 'ECONNREFUSED'
-    function cb(err, connection) { }
-    const cbSpy = this.spy(cb)
 
-    function anonymousFunc(cbSpy) {
-        cbSpy(err)
+    function getConnection(cb) {
+        cb(err)
     }
-    const anonymousFuncSpy = this.spy(anonymousFunc)
+    const getConnectionSpy = this.spy(getConnection)
 
     const mysql = require('../../../node_modules/mysql')
 
     var createPoolStub = this.stub(mysql, 'createPool', function (config) {
         return {
-            getConnection: anonymousFuncSpy
+            getConnection: getConnectionSpy
         }
     })
-
-    mockery.registerMock('../../node_modules/mysql', createPoolStub)
 
     function next(err) { }
     const nextSpy = this.spy(next)
@@ -94,7 +78,7 @@ test('### Test Connect method with connection pooling set to true error case wit
     // Test
     t.ok(createPoolStub.calledOnce)
     t.ok(createPoolStub.calledWithExactly(context.config))
-    t.ok(anonymousFuncSpy.calledOnce)
+    t.ok(getConnectionSpy.calledOnce)
     t.ok(nextSpy.calledOnce)
     t.ok(nextSpy.calledWithExactly(err))
     t.ok(err.message === expectedErrorMessage)
@@ -104,7 +88,7 @@ test('### Test Connect method with connection pooling set to true error case wit
 
 test('### Test Connect method with connection pooling set to true ###', sinon.test(function (t) {
     
-    // Mocks, stubs & spies
+    // Stubs & spies
     const context = {
         config: {
             connection_pooling: true
@@ -117,23 +101,18 @@ test('### Test Connect method with connection pooling set to true ###', sinon.te
         release : releaseSpy
     }
 
-    function cb(err, connection) { }
-    const cbSpy = this.spy(cb)
-
-    function anonymousFunc(cbSpy) {
-        cbSpy(null, connection)
+    function getConnection(cb) {
+        cb(null, connection)
     }
-    const anonymousFuncSpy = this.spy(anonymousFunc)
+    const getConnectionSpy = this.spy(getConnection)
 
     const mysql = require('../../../node_modules/mysql')
 
     var createPoolStub = this.stub(mysql, 'createPool', function (config) {
         return {
-            getConnection: anonymousFuncSpy
+            getConnection: getConnectionSpy
         }
     })
-
-    mockery.registerMock('../../node_modules/mysql', createPoolStub)
 
     function next() { }
     const nextSpy = this.spy(next)
@@ -144,7 +123,7 @@ test('### Test Connect method with connection pooling set to true ###', sinon.te
     // Test
     t.ok(createPoolStub.calledOnce)
     t.ok(createPoolStub.calledWithExactly(context.config))
-    t.ok(anonymousFuncSpy.calledOnce)
+    t.ok(getConnectionSpy.calledOnce)
     t.ok(releaseSpy.calledOnce)
     t.ok(releaseSpy.args[0].length === 0)    
     t.ok(nextSpy.calledOnce)
@@ -155,24 +134,22 @@ test('### Test Connect method with connection pooling set to true ###', sinon.te
 
 test('### Test Connect method with connection pooling set to false ###', sinon.test(function (t) {
     
-    // Mocks, stubs & spies
+    // Stubs & spies
     const context = {
         config: {
             connection_pooling: false
         }
     }
 
-    const mysql = require('../../../node_modules/mysql')
-
     function connect() { }
     const connectSpy = this.spy(connect)
+
+    const mysql = require('../../../node_modules/mysql')
     const createConnectionStub = this.stub(mysql, 'createConnection', function (config) {
         return {
             connect : connectSpy
         }
     })
-
-    mockery.registerMock('../../node_modules/mysql', createConnectionStub)
 
     function next() { }
 
@@ -186,9 +163,4 @@ test('### Test Connect method with connection pooling set to false ###', sinon.t
     
     t.end()
 }))
-
-test('### Disabel mockery ###', function (t) {
-    mockery.disable()
-    t.end()
-})
 
