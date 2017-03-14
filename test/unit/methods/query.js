@@ -39,10 +39,6 @@ test('### Query Call with no results ###', function (t) {
 
   })
 
-  const executor = function (results) {
-    callback()
-  }
-
   const _queryStub = sinon.stub(CONNECTOR, '_query', function (query, data, callback, executor) {
     executor()
   })
@@ -84,9 +80,6 @@ test('### Query Call with results ###', function (t) {
     values.push({ title: 'test' })
     return ' WHERE $eq = ?'
   })
-  const executor = function (results) {
-    callback()
-  }
 
   const ArrowCollectionMock = (function () {
     function ArrowCollectionMock () { }
@@ -167,34 +160,12 @@ test('### Query Call with different query and no results  ###', function (t) {
     return keys
   })
 
-  const executor = function (results) {
-    callback()
-  }
-
   const _queryStub = sinon.stub(CONNECTOR, '_query', function (query, data, callback, executor) {
     executor()
   })
 
   const getTableSchemaStub = sinon.stub(CONNECTOR, 'getTableSchema', function (model) {
 
-  })
-
-  var test = {
-    title: 'test',
-    content: 'test',
-    books: []
-  }
-
-  var test1 = {
-    title: 'test1',
-    content: 'test1',
-    books: []
-  }
-
-  var instance = model.instance(test, false)
-
-  const getInstanceFromRowStub = sinon.stub(CONNECTOR, 'getInstanceFromRow', function (model, row) {
-    return instance
   })
 
   function cb () { }

@@ -24,10 +24,6 @@ test('### DeleteAll Call with no result###', function (t) {
     return 'Post'
   }
 
-  var executor = function (result) {
-    callback()
-  }
-
   function _queryStub (query, callback, executor) {
     executor({ affectedRows: 0 })
   }
@@ -36,16 +32,10 @@ test('### DeleteAll Call with no result###', function (t) {
 
   var tableNameStub = sinon.stub(CONNECTOR, 'getTableName', getTableName)
   var queryStub = sinon.stub(CONNECTOR, '_query', _queryStub)
-  function cb (err, instance) {
+  function cb (errMessage, instance) {
 
   }
   const cbSpy = sinon.spy(cb)
-  var test = {
-    title: 'test',
-    content: 'test',
-    books: []
-  }
-  var instance = model.instance(test, false)
 
   deleteAllMethod.bind(CONNECTOR, model, cbSpy)()
   t.ok(queryStub.calledOnce)
@@ -64,10 +54,6 @@ test('### DeleteAll Call Ok###', function (t) {
     return 'Post'
   }
 
-  var executor = function (result) {
-    callback()
-  }
-
   function _queryStub (query, callback, executor) {
     executor({ affectedRows: 1 })
   }
@@ -76,16 +62,10 @@ test('### DeleteAll Call Ok###', function (t) {
 
   var tableNameStub = sinon.stub(CONNECTOR, 'getTableName', getTableName)
   var queryStub = sinon.stub(CONNECTOR, '_query', _queryStub)
-  function cb (err, instance) {
+  function cb (errMessage, instance) {
 
   }
   const cbSpy = sinon.spy(cb)
-  var test = {
-    title: 'test',
-    content: 'test',
-    books: []
-  }
-  var instance = model.instance(test, false)
 
   deleteAllMethod.bind(CONNECTOR, model, cbSpy)()
   t.ok(queryStub.calledOnce)

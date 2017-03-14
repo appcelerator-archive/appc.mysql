@@ -8,15 +8,15 @@ var CONNECTOR
 
 test('### Start Arrow ###', function (t) {
   server()
-        .then((inst) => {
-          ARROW = inst
-          CONNECTOR = ARROW.getConnector('appc.mysql')
-          t.ok(ARROW, 'Arrow has been started')
-          t.end()
-        })
-        .catch((err) => {
-          t.threw(err)
-        })
+    .then((inst) => {
+      ARROW = inst
+      CONNECTOR = ARROW.getConnector('appc.mysql')
+      t.ok(ARROW, 'Arrow has been started')
+      t.end()
+    })
+    .catch((err) => {
+      t.threw(err)
+    })
 })
 
 test('### Fetch Schema with existing schema ', function (t) {
@@ -26,7 +26,7 @@ test('### Fetch Schema with existing schema ', function (t) {
     primary_keys: {}
   }
 
-  const next = function (err, schema) {
+  const next = function (errMessage, schema) {
 
   }
 
@@ -40,22 +40,19 @@ test('### Fetch Schema with existing schema ', function (t) {
 })
 
 test('### Fetch Schema without existing schema', function (t) {
-  const next = function (err, schema) {
+  const next = function (errMessage, schema) {
 
   }
   const nextMethodSpy = sinon.spy(next)
 
-  const executor = function (results) {
-    var schema = {
-      objects: {},
-      database: 'test',
-      primary_keys: {}
-    }
-    nextMethodSpy(null, schema)
+  var test1 = {
+    COLUMN_KEY: 'PRI'
+  }
+  var test2 = {
   }
 
   const _queryStub = sinon.stub(CONNECTOR, '_query', function (query, db, nextMethodSpy, executor) {
-    executor([])
+    executor([test1, test2])
   })
   fetchSchemaMethod.bind(CONNECTOR, nextMethodSpy)()
   t.ok(nextMethodSpy.calledOnce)

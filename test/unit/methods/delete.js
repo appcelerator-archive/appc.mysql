@@ -28,9 +28,6 @@ test('### Delete Call Not Ok ###', function (t) {
     return 'id'
   }
 
-  var executor = function (result) {
-    callback()
-  }
   function _queryStub (query, data, callback, executor) {
     executor(instance)
   }
@@ -40,7 +37,6 @@ test('### Delete Call Not Ok ###', function (t) {
   var tableNameStub = sinon.stub(CONNECTOR, 'getTableName', getTableName)
   var primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn', getPrimaryKeyColumn)
   var queryStub = sinon.stub(CONNECTOR, '_query', _queryStub)
-  var err = 'error'
   function cb () {
 
   }
@@ -76,11 +72,9 @@ test('### Delete Call Ok ###', function (t) {
   }
   var instance = model.instance(test, false)
 
-  function cb (err, data) { }
+  function cb (errMessage, data) { }
   const cbSpy = sinon.spy(cb)
-  const executor = function (result) {
-    callback(null, instance)
-  }
+
   function getTableName (model) {
     return 'Post'
   }
@@ -126,7 +120,6 @@ test('### Delete Call without primary key ###', function (t) {
   var tableNameStub = sinon.stub(CONNECTOR, 'getTableName', getTableName)
   var primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn', getPrimaryKeyColumn)
 
-  const errorMessage = new Error()
   function cbError (errorMessage) { }
   const cbErrorSpy = sinon.spy(cbError)
 
