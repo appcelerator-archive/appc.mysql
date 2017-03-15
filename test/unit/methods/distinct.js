@@ -20,8 +20,7 @@ test('### Start Arrow ###', function (t) {
 
 test('### Distinct method response ###', sinon.test(function (t) {
   const Model = ARROW.getModel('Posts')
-  const data = 'Test distinct method'
-  function cb(errorMessage, data) { }
+  function cb (errorMessage, data) { }
   const cbSpy = this.spy(cb)
 
   const tableNameStub = this.stub(
@@ -29,14 +28,6 @@ test('### Distinct method response ###', sinon.test(function (t) {
     'getTableName',
     (Model) => {
       return 'post'
-    }
-  )
-
-  const translateWhereToQueryStub = this.stub(
-    CONNECTOR,
-    'translateWhereToQuery',
-    (where, values) => {
-      return true
     }
   )
 
@@ -50,6 +41,7 @@ test('### Distinct method response ###', sinon.test(function (t) {
 
   distinctMethod.bind(CONNECTOR, Model, 'post', {}, cbSpy)()
 
+  t.ok(tableNameStub.calledOnce)
   t.ok(queryStub.calledOnce)
   t.ok(cbSpy.calledOnce)
 
@@ -58,8 +50,7 @@ test('### Distinct method response ###', sinon.test(function (t) {
 
 test('### Distinct method not unique records ###', sinon.test(function (t) {
   const Model = ARROW.getModel('Posts')
-  const data = 'Test distinct method'
-  function cb(errorMessage, data) { }
+  function cb (errorMessage, data) { }
   const cbSpy = this.spy(cb)
 
   const tableNameStub = this.stub(
@@ -67,14 +58,6 @@ test('### Distinct method not unique records ###', sinon.test(function (t) {
     'getTableName',
     (Model) => {
       return 'post'
-    }
-  )
-
-  const translateWhereToQueryStub = this.stub(
-    CONNECTOR,
-    'translateWhereToQuery',
-    (where, values) => {
-      return true
     }
   )
 
@@ -89,6 +72,7 @@ test('### Distinct method not unique records ###', sinon.test(function (t) {
   distinctMethod.bind(CONNECTOR, Model, 'post', {}, cbSpy)()
 
   t.ok(queryStub.calledOnce)
+  t.ok(tableNameStub.calledOnce)
   t.ok(cbSpy.calledOnce)
 
   t.end()
@@ -96,8 +80,7 @@ test('### Distinct method not unique records ###', sinon.test(function (t) {
 
 test('### Distinct method with where clause ###', sinon.test(function (t) {
   const Model = ARROW.getModel('Posts')
-  const data = 'Test distinct method'
-  function cb(errorMessage, data) { }
+  function cb (errorMessage, data) { }
   const cbSpy = this.spy(cb)
 
   const tableNameStub = this.stub(
@@ -112,7 +95,7 @@ test('### Distinct method with where clause ###', sinon.test(function (t) {
     CONNECTOR,
     'translateWhereToQuery',
     (where, values) => {
-      return { "$eq": "Test" }
+      return { '$eq': 'Test' }
     }
   )
 
@@ -126,20 +109,21 @@ test('### Distinct method with where clause ###', sinon.test(function (t) {
 
   const options = {
     where: {
-      Name: { "$eq": "Test" }
+      Name: { '$eq': 'Test' }
     }
   }
 
   distinctMethod.bind(CONNECTOR, Model, 'post', options, cbSpy)()
 
+  t.ok(tableNameStub.calledOnce)
   t.ok(queryStub.calledOnce)
   t.ok(cbSpy.calledOnce)
+  t.ok(translateWhereToQueryStub.calledOnce)
 
   t.end()
 }))
 
 test('### Stop Arrow ###', function (t) {
-
   ARROW.stop(function () {
     t.pass('Arrow has been stopped!')
     t.end()

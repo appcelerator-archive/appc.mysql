@@ -21,63 +21,66 @@ test('### Start Arrow ###', function (t) {
 
 test('### Test findAll Method ###', sinon.test(function (t) {
   const Model = ARROW.getModel('Posts')
-  const data = 'Test findAll method'
   function cb (errorMessage, data) { }
   const cbSpy = this.spy(cb)
 
   const tableNameStub = this.stub(
     CONNECTOR,
-    'getTableName', 
-    (Model) => { 
+    'getTableName',
+    (Model) => {
       return 'test'
     }
   )
 
   const getPrimaryKeyColumnStub = this.stub(
-    CONNECTOR, 
-    'getPrimaryKeyColumn', 
-    (Model) => { 
-      	return true
+    CONNECTOR,
+    'getPrimaryKeyColumn',
+    (Model) => {
+      return true
     }
   )
 
   const escapeKeysStub = this.stub(
-		CONNECTOR,
-		'escapeKeys',
-		(Model) => {
-			return ["'title'", "'content'"]
-		}
-	)
+    CONNECTOR,
+    'escapeKeys',
+    (Model) => {
+      return ["'title'", "'content'"]
+    }
+  )
 
   const getInstanceFromRowStub = this.stub(
-		CONNECTOR,
-		'getInstanceFromRow',
-		(Model, rows) => {
-			return 'data'
-		}
-	)
+    CONNECTOR,
+    'getInstanceFromRow',
+    (Model) => {
+      return 'data'
+    }
+  )
 
   const ArrowCollectionMock = (function () {
-    function ArrowCollectionMock() { }
+    function ArrowCollectionMock () { }
     return ArrowCollectionMock
   })()
- 
+
   const arrowCollectionSpy = this.spy(function () {
     return sinon.createStubInstance(ArrowCollectionMock)
   })
- 
+
   this.stub(arrow, 'Collection', arrowCollectionSpy)
 
   const queryStub = this.stub(
     CONNECTOR,
     '_query',
     (query, callback, executor) => {
-      executor([1,2,3])
+      executor([1, 2, 3])
     }
   )
 
   findAllMethod.bind(CONNECTOR, Model, cbSpy)()
-  
+
+  t.ok(tableNameStub.calledOnce)
+  t.ok(getPrimaryKeyColumnStub.calledOnce)
+  t.ok(escapeKeysStub.calledOnce)
+  t.ok(getInstanceFromRowStub.calledWith(Model))
   t.ok(queryStub.calledOnce)
   t.ok(cbSpy.calledOnce)
   t.end()
@@ -85,70 +88,72 @@ test('### Test findAll Method ###', sinon.test(function (t) {
 
 test('### Test findAll Method - primaryKey column ###', sinon.test(function (t) {
   const Model = ARROW.getModel('Posts')
-  const data = 'Test findAll method'
   function cb (errorMessage, data) { }
   const cbSpy = this.spy(cb)
 
   const tableNameStub = this.stub(
     CONNECTOR,
-    'getTableName', 
-    (Model) => { 
+    'getTableName',
+    (Model) => {
       return 'test'
     }
   )
 
   const getPrimaryKeyColumnStub = this.stub(
-    CONNECTOR, 
-    'getPrimaryKeyColumn', 
-    (Model) => { 
-      	return false
+    CONNECTOR,
+    'getPrimaryKeyColumn',
+    (Model) => {
+      return false
     }
   )
 
   const escapeKeysStub = this.stub(
-		CONNECTOR,
-		'escapeKeys',
-		(Model) => {
-			return ["'title'", "'content'"]
-		}
-	)
+    CONNECTOR,
+    'escapeKeys',
+    (Model) => {
+      return ["'title'", "'content'"]
+    }
+  )
 
   const getInstanceFromRowStub = this.stub(
-		CONNECTOR,
-		'getInstanceFromRow',
-		(Model, rows) => {
-			return 'data'
-		}
-	)
+    CONNECTOR,
+    'getInstanceFromRow',
+    (Model) => {
+      return 'data'
+    }
+  )
 
   const ArrowCollectionMock = (function () {
-    function ArrowCollectionMock() { }
+    function ArrowCollectionMock () { }
     return ArrowCollectionMock
   })()
- 
+
   const arrowCollectionSpy = this.spy(function () {
     return sinon.createStubInstance(ArrowCollectionMock)
   })
- 
+
   this.stub(arrow, 'Collection', arrowCollectionSpy)
 
   const queryStub = this.stub(
     CONNECTOR,
     '_query',
     (query, callback, executor) => {
-      executor([1,2,3])
+      executor([1, 2, 3])
     }
   )
 
   findAllMethod.bind(CONNECTOR, Model, cbSpy)()
-  
+
+  t.ok(tableNameStub.calledOnce)
+  t.ok(getPrimaryKeyColumnStub.calledOnce)
+  t.ok(escapeKeysStub.calledOnce)
+  t.ok(getInstanceFromRowStub.calledWith(Model))
   t.ok(queryStub.calledOnce)
   t.ok(cbSpy.calledOnce)
   t.end()
 }))
 
 test('### Stop Arrow ###', function (t) {
-
   ARROW.stop(function () {
     t.pass('Arrow has been stopped!')
     t.end()
