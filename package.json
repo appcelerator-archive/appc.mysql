@@ -24,8 +24,7 @@
   "scripts": {
     "start": "appc run",
     "test": "grunt",
-    "standalone": "tap test/unit/utility/*.js  --color --bail --cov",
-    "lint-fix": "standard --fix | snazzy 'test/unit/utilities'"
+    "standalone": "tap test/unit/utility/*.js  --color --bail --cov"
   },
   "private": true,
   "dependencies": {
