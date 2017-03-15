@@ -28,5 +28,6 @@ test('### Should create models from schema ###', function (t) {
   createModelsFromSchema.call(mockConnector)
   t.ok(arrowModelExtendStub.calledOnce)
   t.ok(mockConnector.convertDataTypeToJSType.called)
+  arrowModelExtendStub.restore()
   t.end()
 })
