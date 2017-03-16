@@ -6,7 +6,7 @@ module.exports = function (options) {
   return new Promise((resolve, reject) => {
     options = options || {}
     const arrow = new Arrow({}, true)
-    const connector = arrow.getConnector('appc.odata')
+    const connector = arrow.getConnector('appc.mysql')
     connector.metadata = {}
 
     if (options.generateTestModels !== false) {
