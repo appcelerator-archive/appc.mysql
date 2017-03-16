@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "arrow": "^*",
-    "grunt": "^1.0.1",
+    "grunt": "^0.4.5",
     "grunt-mocha-test": "^0.13.2",
     "mocha": "^1.21.4",
     "mockery": "^2.0.0",
