@@ -182,7 +182,7 @@ test('### Query Call with different query and no results  ###', function (t) {
   t.ok(tableNameStub.calledWith(model))
   t.ok(primaryKeyStub.calledOnce)
   t.ok(primaryKeyStub.calledWith(model))
-  t.ok(escapeKeysStub.calledOnce)
+  t.ok(escapeKeysStub.called)
   t.ok(escapeKeysStub.calledWith([]))
   t.ok(_queryStub.calledOnce)
   t.ok(_queryStub.calledWith('SELECT id,  FROM Post ORDER BY content DESC LIMIT 10', [], cbSpy))
