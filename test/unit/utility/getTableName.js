@@ -7,6 +7,7 @@ test('### Start Arrow ###', function (t) {
   server()
     .then((inst) => {
       ARROW = inst
+      CONNECTOR = ARROW.getConnector('appc.mysql')
       t.ok(ARROW, 'Arrow has been started')
       t.end()
     })
@@ -18,9 +19,9 @@ test('### Start Arrow ###', function (t) {
 test('### getTableName ###', function (t) {
   const Model = ARROW.getModel('Posts')
 
-  const name = getTableName(Model)
+  const name = getTableName.bind(CONNECTOR, Model)()
 
-  t.equals(name, 'Posts')
+  t.type(name, 'string')
 
   t.end()
 })

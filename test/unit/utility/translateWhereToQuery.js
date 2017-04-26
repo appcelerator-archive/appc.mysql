@@ -34,7 +34,7 @@ test('### translateWhereToQuery ###', function (t) {
 
   t.ok(translateWhereToQuerySpy.calledOnce)
   t.ok(translateWhereToQuerySpy.returnValues)
-  t.equals(typeof translateWhereToQuerySpy.returnValues[0], 'string')
+  t.type(translateWhereToQuerySpy.returnValues[0], 'string')
 
   translateWhereToQuerySpy.reset()
 
