@@ -79,7 +79,7 @@ test('### Test findAll Method ###', sinon.test(function (t) {
 
   t.ok(tableNameStub.calledOnce)
   t.ok(getPrimaryKeyColumnStub.calledOnce)
-  t.ok(escapeKeysStub.calledOnce)
+  t.ok(escapeKeysStub.called)
   t.ok(getInstanceFromRowStub.calledWith(Model))
   t.ok(queryStub.calledOnce)
   t.ok(cbSpy.calledOnce)
@@ -146,7 +146,7 @@ test('### Test findAll Method - primaryKey column ###', sinon.test(function (t) 
 
   t.ok(tableNameStub.calledOnce)
   t.ok(getPrimaryKeyColumnStub.calledOnce)
-  t.ok(escapeKeysStub.calledOnce)
+  t.ok(escapeKeysStub.called)
   t.ok(getInstanceFromRowStub.calledWith(Model))
   t.ok(queryStub.calledOnce)
   t.ok(cbSpy.calledOnce)

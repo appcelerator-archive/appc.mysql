@@ -50,7 +50,7 @@ test('### Delete Call Not Ok ###', function (t) {
 
   deleteMethod.bind(CONNECTOR, model, instance, cbSpy)()
   t.ok(queryStub.calledOnce)
-  t.ok(queryStub.calledWith('DELETE FROM Post WHERE id = ?', undefined, cbSpy))
+  t.ok(queryStub.calledWith('DELETE FROM `Post` WHERE id = ?', undefined, cbSpy))
   t.ok(tableNameStub.calledOnce)
   t.ok(tableNameStub.calledWith(model))
   t.ok(primaryKeyStub.calledOnce)
@@ -93,7 +93,7 @@ test('### Delete Call Ok ###', function (t) {
 
   deleteMethod.bind(CONNECTOR, model, instance, cbSpy)()
   t.ok(queryStub.calledOnce)
-  t.ok(queryStub.calledWith('DELETE FROM Post WHERE id = ?', undefined, cbSpy))
+  t.ok(queryStub.calledWith('DELETE FROM `Post` WHERE id = ?', undefined, cbSpy))
   t.ok(tableNameStub.calledOnce)
   t.ok(tableNameStub.calledWith(model))
   t.ok(primaryKeyStub.calledOnce)
