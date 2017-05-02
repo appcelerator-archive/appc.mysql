@@ -48,7 +48,6 @@ test('### _query - Error ###', sinon.test(function (t) {
 
 test('### query - Error ###', sinon.test(function (t) {
   const connQuerySpy = sinon.spy()
-  const connReleaseSpy = sinon.spy()
 
   const _queryStub = sinon.stub(
     CONNECTOR,
@@ -79,7 +78,6 @@ test('### query - Error ###', sinon.test(function (t) {
 
 test('### query - Success ###', sinon.test(function (t) {
   const connQuerySpy = sinon.spy()
-  const connReleaseSpy = sinon.spy()
 
   const _queryStub = sinon.stub(
     CONNECTOR,

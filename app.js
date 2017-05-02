@@ -10,6 +10,7 @@ var Post = Arrow.Model.extend('post', {
     title: { type: String },
     content: { type: String }
   },
+  disabledActions: ['findAndModify'],
   connector: 'appc.mysql'
 })
 server.addModel(Post)
