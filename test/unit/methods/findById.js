@@ -51,7 +51,7 @@ test('FindByID without primary key', sinon.test(function (t) {
 
   t.ok(primaryKeyStub.calledOnce)
   t.ok(tableStub.calledOnce)
-  t.ok(escapeKeysStub.calledOnce)
+  t.ok(escapeKeysStub.called)
   t.ok(cbErrorSpy.calledOnce)
 
   t.end()
@@ -98,7 +98,7 @@ test('FindByID empty', sinon.test(function (t) {
 
   t.ok(primaryKeyStub.calledOnce)
   t.ok(tableStub.calledOnce)
-  t.ok(escapeKeysStub.calledOnce)
+  t.ok(escapeKeysStub.called)
   t.ok(queryStub.calledOnce)
   t.ok(cbSpy.calledOnce)
 
@@ -154,7 +154,7 @@ test('FindByID response', sinon.test(function (t) {
 
   t.ok(primaryKeyStub.calledOnce)
   t.ok(tableStub.calledOnce)
-  t.ok(escapeKeysStub.calledOnce)
+  t.ok(escapeKeysStub.called)
   t.ok(queryStub.calledOnce)
   t.ok(getInstanceFromRowStub.calledOnce)
   t.ok(cbSpy.calledOnce)

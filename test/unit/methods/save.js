@@ -40,9 +40,7 @@ test('### Test Save Error Case ###', sinon.test(function (t) {
     return undefined
   })
 
-  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys', function (columns) {
-    return columns
-  })
+  const escapeKeysSpy = this.spy(CONNECTOR, 'escapeKeys')
 
   const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns', function (table, paylod) {
     var result = []
@@ -65,8 +63,8 @@ test('### Test Save Error Case ###', sinon.test(function (t) {
   t.ok(getPrimaryKeyColumnStub.calledWith(Model))
   t.ok(fetchColumnsStub.calledOnce)
   t.ok(fetchColumnsStub.calledWith('post', ['Some Title', 'Some Content']))
-  t.ok(escapeKeysStub.calledOnce)
-  t.ok(escapeKeysStub.calledWith(['title', 'content']))
+  t.ok(escapeKeysSpy.called)
+  t.ok(escapeKeysSpy.calledWith(['title', 'content']))
   t.ok(cbSpy.calledOnce)
   t.ok(cbSpy.args[0] !== null)
   var error = cbSpy.args[0][0]
@@ -96,9 +94,7 @@ test('### Test Save Valid Data ###', sinon.test(function (t) {
     return 7
   })
 
-  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys', function (columns) {
-    return columns
-  })
+  const escapeKeysSpy = this.spy(CONNECTOR, 'escapeKeys')
 
   const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns', function (table, paylod) {
     var result = []
@@ -120,7 +116,7 @@ test('### Test Save Valid Data ###', sinon.test(function (t) {
   saveMethod.bind(CONNECTOR, Model, instance, cbSpy)()
 
     // Test
-  const expectedQueryString = 'UPDATE post SET title = ?,content = ? WHERE 7 = ?'
+  const expectedQueryString = 'UPDATE `post` SET `title` = ?,`content` = ? WHERE 7 = ?'
 
   t.ok(getTableNameStub.calledOnce)
   t.ok(getTableNameStub.calledWith(Model))
@@ -128,8 +124,8 @@ test('### Test Save Valid Data ###', sinon.test(function (t) {
   t.ok(getPrimaryKeyColumnStub.calledWith(Model))
   t.ok(fetchColumnsStub.calledOnce)
   t.ok(fetchColumnsStub.calledWith('post', ['Some Title', 'Some Content']))
-  t.ok(escapeKeysStub.calledOnce)
-  t.ok(escapeKeysStub.calledWith(['title', 'content']))
+  t.ok(escapeKeysSpy.called)
+  t.ok(escapeKeysSpy.calledWith(['title', 'content']))
   t.ok(lodashValuesStub.calledOnce)
   t.ok(lodashValuesStub.calledWith(['Some Title', 'Some Content']))
   t.ok(queryStub.calledOnce)
@@ -162,9 +158,7 @@ test('### Test Save Valid Data nothing to save ###', sinon.test(function (t) {
     return 7
   })
 
-  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys', function (columns) {
-    return columns
-  })
+  const escapeKeysSpy = this.spy(CONNECTOR, 'escapeKeys')
 
   const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns', function (table, paylod) {
     var result = []
@@ -186,7 +180,7 @@ test('### Test Save Valid Data nothing to save ###', sinon.test(function (t) {
   saveMethod.bind(CONNECTOR, Model, instance, cbSpy)()
 
     // Test
-  const expectedQueryString = 'UPDATE post SET title = ?,content = ? WHERE 7 = ?'
+  const expectedQueryString = 'UPDATE `post` SET `title` = ?,`content` = ? WHERE 7 = ?'
 
   t.ok(getTableNameStub.calledOnce)
   t.ok(getTableNameStub.calledWith(Model))
@@ -194,8 +188,8 @@ test('### Test Save Valid Data nothing to save ###', sinon.test(function (t) {
   t.ok(getPrimaryKeyColumnStub.calledWith(Model))
   t.ok(fetchColumnsStub.calledOnce)
   t.ok(fetchColumnsStub.calledWith('post', ['Some Title', 'Some Content']))
-  t.ok(escapeKeysStub.calledOnce)
-  t.ok(escapeKeysStub.calledWith(['title', 'content']))
+  t.ok(escapeKeysSpy.called)
+  t.ok(escapeKeysSpy.calledWith(['title', 'content']))
   t.ok(lodashValuesStub.calledOnce)
   t.ok(lodashValuesStub.calledWith(['Some Title', 'Some Content']))
   t.ok(queryStub.calledOnce)

@@ -39,7 +39,7 @@ test('### DeleteAll Call with no result###', function (t) {
 
   deleteAllMethod.bind(CONNECTOR, model, cbSpy)()
   t.ok(queryStub.calledOnce)
-  t.ok(queryStub.calledWith('DELETE FROM Post', cbSpy))
+  t.ok(queryStub.calledWith('DELETE FROM `Post`', cbSpy))
   t.ok(tableNameStub.calledOnce)
   t.ok(tableNameStub.calledWith(model))
   t.ok(cbSpy.calledOnce)
@@ -69,7 +69,7 @@ test('### DeleteAll Call Ok###', function (t) {
 
   deleteAllMethod.bind(CONNECTOR, model, cbSpy)()
   t.ok(queryStub.calledOnce)
-  t.ok(queryStub.calledWith('DELETE FROM Post', cbSpy))
+  t.ok(queryStub.calledWith('DELETE FROM `Post`', cbSpy))
   t.ok(tableNameStub.calledOnce)
   t.ok(tableNameStub.calledWith(model))
   t.ok(cbSpy.calledOnce)
