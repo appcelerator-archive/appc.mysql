@@ -17,18 +17,23 @@
     "appcelerator",
     "mysql"
   ],
+    "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/appcelerator/appc.mysql"
   },
   "scripts": {
     "start": "appc run",
+    "build": "npm run clean && npm run build:dev && npm run security",
+    "build:dev": "npm run build:dist",
+    "build:dist": "babel -d ./dist ./lib",
     "lint": "standard --fix",
-    "check-security": "nsp check || true",
-    "check-deps": "retire || true",
-    "clean": "rimraf ./tmp",
-    "checks": "npm run check-deps && npm run check-security",
-    "test": "npm run checks && npm run test:unit && npm run clean",
+    "clean": "rimraf ./tmp && rimraf dist/* coverage/*",
+    "security": "nsp check --output json > scan-nsp.json",
+    "test": "npm run security && npm run test:unit && npm run clean",
     "test:coverage": "nyc check-coverage --lines 90 --functions 95 --branches 85 --statements 90",
     "test:unit": "tap ./test/unit/* --color --bail --coverage --coverage-report=html && npm run test:coverage",
     "test:integration": "grunt"
@@ -43,6 +48,12 @@
   },
   "devDependencies": {
     "arrow": "^*",
+    "babel-cli": "^6.11.4",
+    "babel-core": "^6.0.0",
+    "babel-istanbul": "^0.12.1",
+    "babel-polyfill": "^6.13.0",
+    "babel-preset-es2015": "^6.0.15",
+    "babel-preset-stage-2": "^6.22.0",
     "grunt": "^0.4.5",
     "grunt-mocha-test": "^0.13.2",
     "mocha": "^1.21.4",

@@ -1,13 +1,29 @@
-node_modules
+# Logs
 logs
-*.tgz
-conf/local.js
 *.log
+
+# Dependency directories
+node_modules
+
+# Coverage
+coverage
+
+# vscode directory
+.vscode/*
 
 # nyc test coverage
 .nyc_output
 
-# Custom
+# retire and nsp files
+scan-nsp.json
+scan-retire.json
+
+# Others
+*.tgz
 .DS_Store
-.vscode
-coverage
+conf/local.js
+dist
+._*
+_tmp
+undefined.metadata
+npm-debug.log.*
