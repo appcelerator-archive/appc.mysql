@@ -2,14 +2,12 @@
   "name": "appc.mysql",
   "description": "MySQL connector",
   "version": "1.4.0",
-  "author": "Jeff Haynie",
-  "maintainers": [
-    "Jeff Haynie <jhaynie@appcelerator.com>",
-    "Dawson Toth <dtoth@appcelerator.com>",
-    "Chee Kiat Ng <cng@appcelerator.com"
-  ],
+  "author": {
+    "email": "support@axway.com",
+    "name": "Axway R&D",
+    "url": "https://axway.com"
+  },
   "license": "Apache-2.0",
-  "framework": "none",
   "keywords": [
     "arrow",
     "arrow-connector",
@@ -17,59 +15,91 @@
     "appcelerator",
     "mysql"
   ],
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-2"
+    ]
+  },
   "files": [
-    "dist"
+    "docs",
+    "dist",
+    "conf"
   ],
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/appcelerator/appc.mysql"
   },
-  "scripts": {
-    "start": "appc run",
-    "build": "npm run clean && npm run build:dev && npm run security",
-    "build:dev": "npm run build:dist",
-    "build:dist": "babel -d ./dist ./lib",
-    "lint": "standard --fix",
-    "clean": "rimraf ./tmp && rimraf dist/* coverage/*",
-    "security": "retire --exitwith 0 --outputpath scan-retire.json && nsp check --output json > scan-nsp.json",
-    "test": "npm run security && npm run test:unit && npm run clean",
-    "test:coverage": "nyc check-coverage --lines 90 --functions 95 --branches 85 --statements 90",
-    "test:unit": "tap ./test/unit/* --color --bail --coverage --coverage-report=html && npm run test:coverage",
-    "test:integration": "grunt"
-  },
   "private": true,
   "dependencies": {
     "async": "^0.9.0",
     "lodash": "^3.10.1",
     "mysql": "^2.9.0",
-    "pkginfo": "^0.3.0",
     "semver": "^5.0.3"
   },
   "devDependencies": {
-    "arrow": "^*",
-    "babel-cli": "^6.11.4",
-    "babel-core": "^6.0.0",
     "babel-istanbul": "^0.12.1",
     "babel-polyfill": "^6.13.0",
-    "babel-preset-es2015": "^6.0.15",
-    "babel-preset-stage-2": "^6.22.0",
-    "grunt": "^0.4.5",
-    "grunt-mocha-test": "^0.13.2",
-    "mocha": "^1.21.4",
-    "mockery": "^2.0.0",
-    "nsp": "^2.6.3",
-    "nyc": "^10.1.2",
-    "retire": "^1.2.12",
-    "rimraf": "^2.6.1",
-    "should": "^4.0.4",
+    "grunt": "0.4.5",
+    "grunt-mocha-test": "0.12.0",
+    "mocha": "1.21.4",
+    "arrow": "*",
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-stage-2": "6.24.1",
+    "cross-env": "5.1.1",
+    "npm-check": "5.5.2",
+    "nyc": "11.3.0",
+    "nsp": "3.1.0",
+    "retire": "1.4.0",
+    "rimraf": "2.6.2",
     "sinon": "^1.17.7",
-    "standard": "^9.0.1",
-    "tap": "^10.3.0"
+    "snazzy": "7.0.0",
+    "standard": "10.0.3",
+    "tap": "11.0.0",
+    "tap-mocha-reporter": "3.0.6",
+    "should": "13.1.3"
+  },
+  "scripts": {
+    "start": "appc run",
+    "all": "npm i && npm run clean && npm run lint:fix && npm run test && npm run build:dist && npm run security && npm run check:dependencies",
+    "build": "npm run clean && npm run build:dev && npm run check:dependencies && npm run security",
+    "build:dev": "npm run build:lint && npm run test && npm run build:dist",
+    "build:dist": "npm run transpile",
+    "build:lint": "standard | snazzy",
+    "test": "npm run clean:test && cross-env NODE_ENV=test npm run test:unit",
+    "test:unit": "tap test/unit/* --bail --coverage-report=html | tap-mocha-reporter spec",
+    "test:integration": "grunt",
+    "posttest": "nyc check-coverage --lines 80 --branches 80 --functions 80 || exit 0",
+    "release:publish": "git add -A && git push origin HEAD:master && git push origin HEAD:master --tags",
+    "release:major": "npm version major && npm run release:publish && git push origin HEAD:master --follow-tags",
+    "release:minor": "npm version minor && npm run release:publish && git push origin HEAD:master --follow-tags",
+    "release:patch": "npm version patch && npm run release:publish && git push origin HEAD:master --follow-tags",
+    "release:prerelease": "npm version prerelease && npm run release:publish && git push origin HEAD:master --follow-tags",
+    "release:npm": "curl -X GET http://registry.ecd.axway.int:8081/artifactory/local-npm/$npm_package_name/-/$npm_package_name-$npm_package_version.tgz 2>/dev/null > $npm_package_name-$npm_package_version.tgz && npm publish --registry  https://registry.npmjs.org ./$npm_package_name-$npm_package_version.tgz && rm ./$npm_package_name-$npm_package_version.tgz",
+    "security": "npm run security:retire && npm run security:nsp",
+    "security:retire": "retire --exitwith 0 --package --jspath ./dist --nodepath ./ --outputformat json --outputpath scan-retire.json",
+    "security:nsp": "nsp check --reporter json > scan-nsp.json --warn-only",
+    "clean": "rimraf dist coverage .nyc-output",
+    "clean:test": "rimraf coverage .nyc-output",
+    "lint:fix": "standard --fix | snazzy",
+    "check:dependencies": "npm-check || exit 0",
+    "transpile": "babel -d ./dist ./lib"
   },
   "standard": {
     "ignore": [
+      ".nyc_output",
+      ".vscode",
+      "coverage",
+      "node_modules",
+      "dist",
+      "config",
       "test/integration/**"
     ]
+  },
+  "nyc": {
+    "include": "src"
   }
 }

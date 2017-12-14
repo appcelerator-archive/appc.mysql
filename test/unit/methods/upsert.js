@@ -276,7 +276,7 @@ test('### Upsert - findByID error ###', function (t) {
     return ['title', 'content', 'books']
   })
   var findByIDStub = sandbox.stub(CONNECTOR, 'findByID', function (model, id, callback) {
-    callback('err')
+    callback(new Error('err'))
   })
 
   const cbSpy = sandbox.spy()
@@ -305,7 +305,7 @@ test('### Upsert - findByID error ###', function (t) {
   t.ok(primaryKeyStub.calledOnce)
   t.ok(findByIDStub.calledOnce)
   t.ok(cbSpy.calledOnce)
-  t.ok(cbSpy.calledWith('err'))
+  t.ok(cbSpy.calledWith(new Error('err')))
   sandbox.restore()
   t.end()
 })

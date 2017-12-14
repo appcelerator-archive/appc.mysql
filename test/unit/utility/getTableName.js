@@ -2,6 +2,7 @@ const test = require('tap').test
 const getTableName = require('../../../lib/utility/getTableName').getTableName
 const server = require('../../server')
 var ARROW
+var CONNECTOR
 
 test('### Start Arrow ###', function (t) {
   server()
