@@ -14,8 +14,8 @@ coverage
 # nyc test coverage
 .nyc_output
 
-# retire and nsp files
-scan-nsp.json
+# retire and audit files
+scan-audit.json
 scan-retire.json
 
 # Others
