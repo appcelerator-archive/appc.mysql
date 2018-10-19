@@ -78,7 +78,7 @@
     "release:patch": "npm version patch && npm run release:publish && git push origin HEAD:master --follow-tags",
     "release:prerelease": "npm version prerelease && npm run release:publish && git push origin HEAD:master --follow-tags",
     "release:npm": "curl -X GET http://registry.ecd.axway.int:8081/artifactory/local-npm/$npm_package_name/-/$npm_package_name-$npm_package_version.tgz 2>/dev/null > $npm_package_name-$npm_package_version.tgz && npm publish --registry  https://registry.npmjs.org ./$npm_package_name-$npm_package_version.tgz && rm ./$npm_package_name-$npm_package_version.tgz",
-    "security": "npm run security:retire && npm run security:audit",
+    "security": "retire --exitwith 0 --package --includemeta --outputformat json --outputpath scan-retire.json && npm audit --registry https://registry.npmjs.org --json > scan-audit.json || true",
     "security:retire": "retire --exitwith 0 --package --jspath ./dist --nodepath ./ --outputformat json --outputpath scan-retire.json",
     "security:audit": "npm audit --registry https://registry.npmjs.org --json > scan-audit.json || true",
     "clean": "rimraf dist coverage .nyc-output",
