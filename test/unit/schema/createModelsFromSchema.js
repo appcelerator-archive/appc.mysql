@@ -22,7 +22,7 @@ test('### Should create models from schema ###', function (t) {
     convertDataTypeToJSType: sinon.spy()
   }
 
-  const arrowModelExtendStub = sinon.stub(Arrow.Model, 'extend', sinon.spy())
+  const arrowModelExtendStub = sinon.stub(Arrow.Model, 'extend').callsFake(sinon.spy())
 
   // Test call
   createModelsFromSchema.call(mockConnector)

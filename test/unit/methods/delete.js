@@ -8,15 +8,15 @@ var CONNECTOR
 
 test('### Start Arrow ###', function (t) {
   server()
-        .then((inst) => {
-          ARROW = inst
-          CONNECTOR = ARROW.getConnector('appc.mysql')
-          t.ok(ARROW, 'Arrow has been started')
-          t.end()
-        })
-        .catch((err) => {
-          t.threw(err)
-        })
+    .then((inst) => {
+      ARROW = inst
+      CONNECTOR = ARROW.getConnector('appc.mysql')
+      t.ok(ARROW, 'Arrow has been started')
+      t.end()
+    })
+    .catch((err) => {
+      t.threw(err)
+    })
 })
 
 test('### Delete Call Not Ok ###', function (t) {
@@ -34,9 +34,9 @@ test('### Delete Call Not Ok ###', function (t) {
 
   const model = ARROW.getModel('Posts')
 
-  var tableNameStub = sinon.stub(CONNECTOR, 'getTableName', getTableName)
-  var primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn', getPrimaryKeyColumn)
-  var queryStub = sinon.stub(CONNECTOR, '_query', _queryStub)
+  var tableNameStub = sinon.stub(CONNECTOR, 'getTableName').callsFake(getTableName)
+  var primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(getPrimaryKeyColumn)
+  var queryStub = sinon.stub(CONNECTOR, '_query').callsFake(_queryStub)
   function cb () {
 
   }
@@ -87,9 +87,9 @@ test('### Delete Call Ok ###', function (t) {
     executor({ affectedRows: 1 })
   }
 
-  var tableNameStub = sinon.stub(CONNECTOR, 'getTableName', getTableName)
-  var primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn', getPrimaryKeyColumn)
-  var queryStub = sinon.stub(CONNECTOR, '_query', _queryStub)
+  var tableNameStub = sinon.stub(CONNECTOR, 'getTableName').callsFake(getTableName)
+  var primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(getPrimaryKeyColumn)
+  var queryStub = sinon.stub(CONNECTOR, '_query').callsFake(_queryStub)
 
   deleteMethod.bind(CONNECTOR, model, instance, cbSpy)()
   t.ok(queryStub.calledOnce)
@@ -117,8 +117,8 @@ test('### Delete Call without primary key ###', function (t) {
 
   const model = ARROW.getModel('Posts')
 
-  var tableNameStub = sinon.stub(CONNECTOR, 'getTableName', getTableName)
-  var primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn', getPrimaryKeyColumn)
+  var tableNameStub = sinon.stub(CONNECTOR, 'getTableName').callsFake(getTableName)
+  var primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(getPrimaryKeyColumn)
 
   function cbError (errorMessage) { }
   const cbErrorSpy = sinon.spy(cbError)

@@ -1,6 +1,8 @@
 const test = require('tap').test
 const server = require('../../server')
 const sinon = require('sinon')
+const sinonTest = require('sinon-test')
+const testWrap = sinonTest(sinon)
 const createMethod = require('../../../lib/methods/create')['create']
 const lodash = require('lodash')
 var ARROW
@@ -8,19 +10,19 @@ var CONNECTOR
 
 test('### Start Arrow ###', function (t) {
   server()
-        .then((inst) => {
-          ARROW = inst
-          CONNECTOR = ARROW.getConnector('appc.mysql')
-          t.ok(ARROW, 'Arrow has been started')
-          t.end()
-        })
-        .catch((err) => {
-          t.threw(err)
-        })
+    .then((inst) => {
+      ARROW = inst
+      CONNECTOR = ARROW.getConnector('appc.mysql')
+      t.ok(ARROW, 'Arrow has been started')
+      t.end()
+    })
+    .catch((err) => {
+      t.threw(err)
+    })
 })
 
-test('### Test Create with valid data no id ###', sinon.test(function (t) {
-    // Data
+test('### Test Create with valid data no id ###', testWrap(function (t) {
+  // Data
   const Model = ARROW.getModel('Posts')
   Model.instance = function (values, isSomething) {
     return {
@@ -34,43 +36,43 @@ test('### Test Create with valid data no id ###', sinon.test(function (t) {
   }
   const values = 'someValues'
 
-    // Stubs & spies
-  const getTableNameStub = this.stub(CONNECTOR, 'getTableName', function (Model) {
+  // Stubs & spies
+  const getTableNameStub = this.stub(CONNECTOR, 'getTableName').callsFake(function (Model) {
     return 'post'
   })
 
-  const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn', function (Model) {
+  const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(function (Model) {
     return undefined
   })
 
-  const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns', function (table, paylod) {
+  const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns').callsFake(function (table, paylod) {
     var result = []
     result.push('title')
     result.push('content')
     return result
   })
 
-  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys', function (columns) {
+  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys').callsFake(function (columns) {
     return columns
   })
 
-  const returnPlaceholderStub = this.stub(CONNECTOR, 'returnPlaceholder', function () {
+  const returnPlaceholderStub = this.stub(CONNECTOR, 'returnPlaceholder').callsFake(function () {
     return '?'
   })
 
-  const lodashValuesStub = this.stub(lodash, 'values', function (payload) { return ['Some Title', 'Some Content'] })
+  const lodashValuesStub = this.stub(lodash, 'values').callsFake(function (payload) { return ['Some Title', 'Some Content'] })
 
   function cb (errParameter, instance) { }
   const cbSpy = this.spy(cb)
 
   function executor (result) { }
 
-  const queryStub = this.stub(CONNECTOR, '_query', function (query, data, cbSpy, executor) { executor({ insertId: 7 }) })
+  const queryStub = this.stub(CONNECTOR, '_query').callsFake(function (query, data, cbSpy, executor) { executor({ insertId: 7 }) })
 
-    // Execution
+  // Execution
   createMethod.bind(CONNECTOR, Model, values, cbSpy, executor)()
 
-    // Test
+  // Test
   const expectedQueryString = 'INSERT INTO post (title,content) VALUES (?,?)'
 
   const data = ['Some Title', 'Some Content']
@@ -89,8 +91,8 @@ test('### Test Create with valid data no id ###', sinon.test(function (t) {
   t.end()
 }))
 
-test('### Test Create with valid data with id ###', sinon.test(function (t) {
-    // Data
+test('### Test Create with valid data with id ###', testWrap(function (t) {
+  // Data
   CONNECTOR.metadata.schema = {
     objects: {
       post: {
@@ -111,43 +113,43 @@ test('### Test Create with valid data with id ###', sinon.test(function (t) {
   }
   const values = 'someValues'
 
-    // Stubs & spies
-  const getTableNameStub = this.stub(CONNECTOR, 'getTableName', function (Model) {
+  // Stubs & spies
+  const getTableNameStub = this.stub(CONNECTOR, 'getTableName').callsFake(function (Model) {
     return 'post'
   })
 
-  const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn', function (Model) {
+  const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(function (Model) {
     return 'id'
   })
 
-  const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns', function (table, paylod) {
+  const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns').callsFake(function (table, paylod) {
     var result = []
     result.push('title')
     result.push('content')
     return result
   })
 
-  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys', function (columns) {
+  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys').callsFake(function (columns) {
     return columns
   })
 
-  const returnPlaceholderStub = this.stub(CONNECTOR, 'returnPlaceholder', function () {
+  const returnPlaceholderStub = this.stub(CONNECTOR, 'returnPlaceholder').callsFake(function () {
     return '?'
   })
 
-  const lodashValuesStub = this.stub(lodash, 'values', function (payload) { return ['Some Title', 'Some Content'] })
+  const lodashValuesStub = this.stub(lodash, 'values').callsFake(function (payload) { return ['Some Title', 'Some Content'] })
 
   function cb (errParameter, instance) { }
   const cbSpy = this.spy(cb)
 
   function executor (result) { }
 
-  const queryStub = this.stub(CONNECTOR, '_query', function (query, data, cbSpy, executor) { executor({ insertId: 7 }) })
+  const queryStub = this.stub(CONNECTOR, '_query').callsFake(function (query, data, cbSpy, executor) { executor({ insertId: 7 }) })
 
-    // Execution
+  // Execution
   createMethod.bind(CONNECTOR, Model, values, cbSpy, executor)()
 
-    // Test
+  // Test
   const expectedQueryString = 'INSERT INTO post (id,title,content) VALUES (NULL, ?,?)'
 
   const data = ['Some Title', 'Some Content']
@@ -171,8 +173,8 @@ test('### Test Create with valid data with id ###', sinon.test(function (t) {
   t.end()
 }))
 
-test('### Test Create with valid data with id auto-increment ###', sinon.test(function (t) {
-    // Data
+test('### Test Create with valid data with id auto-increment ###', testWrap(function (t) {
+  // Data
   CONNECTOR.metadata.schema = {
     objects: {
       post: {
@@ -195,43 +197,43 @@ test('### Test Create with valid data with id auto-increment ###', sinon.test(fu
   }
   const values = 'someValues'
 
-    // Stubs & spies
-  const getTableNameStub = this.stub(CONNECTOR, 'getTableName', function (Model) {
+  // Stubs & spies
+  const getTableNameStub = this.stub(CONNECTOR, 'getTableName').callsFake(function (Model) {
     return 'post'
   })
 
-  const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn', function (Model) {
+  const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(function (Model) {
     return 'id'
   })
 
-  const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns', function (table, paylod) {
+  const fetchColumnsStub = this.stub(CONNECTOR, 'fetchColumns').callsFake(function (table, paylod) {
     var result = []
     result.push('title')
     result.push('content')
     return result
   })
 
-  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys', function (columns) {
+  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys').callsFake(function (columns) {
     return columns
   })
 
-  const returnPlaceholderStub = this.stub(CONNECTOR, 'returnPlaceholder', function () {
+  const returnPlaceholderStub = this.stub(CONNECTOR, 'returnPlaceholder').callsFake(function () {
     return '?'
   })
 
-  const lodashValuesStub = this.stub(lodash, 'values', function (payload) { return ['Some Title', 'Some Content'] })
+  const lodashValuesStub = this.stub(lodash, 'values').callsFake(function (payload) { return ['Some Title', 'Some Content'] })
 
   function cb (errParameter, instance) { }
   const cbSpy = this.spy(cb)
 
   function executor (result) { }
 
-  const queryStub = this.stub(CONNECTOR, '_query', function (query, data, cbSpy, executor) { executor({ insertId: 7 }) })
+  const queryStub = this.stub(CONNECTOR, '_query').callsFake(function (query, data, cbSpy, executor) { executor({ insertId: 7 }) })
 
-    // Execution
+  // Execution
   createMethod.bind(CONNECTOR, Model, values, cbSpy, executor)()
 
-    // Test
+  // Test
   const expectedQueryString = 'INSERT INTO post (id,title,content) VALUES (NULL, ?,?)'
 
   const data = ['Some Title', 'Some Content']

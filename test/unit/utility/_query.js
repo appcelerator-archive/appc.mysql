@@ -1,6 +1,8 @@
 const test = require('tap').test
 const server = require('../../server')
 const sinon = require('sinon')
+const sinonTest = require('sinon-test')
+const testWrap = sinonTest(sinon)
 var ARROW
 var CONNECTOR
 
@@ -25,42 +27,34 @@ test('### Start Arrow ###', function (t) {
     })
 })
 
-test('### _query - Error ###', sinon.test(function (t) {
-  const _queryStub = sinon.stub(
-    CONNECTOR,
-    'getConnection',
-    (callback) => {
-      callback(errorMessage)
-    }
-  )
+test('### _query - Error ###', testWrap(function (t) {
+  const _queryStub = sinon.stub(CONNECTOR, 'getConnection').callsFake((callback) => {
+    callback(errorMessage)
+  })
 
   CONNECTOR._query({}, {}, cbSpy, executorSpy)
   t.ok(_queryStub.calledOnce)
   t.ok(cbSpy.calledOnce)
   t.ok(cbSpy.calledWith(errorMessage))
 
-  cbSpy.reset()
+  cbSpy.resetHistory()
   _queryStub.restore()
-  executorSpy.reset()
+  executorSpy.resetHistory()
 
   t.end()
 }))
 
-test('### query - Error ###', sinon.test(function (t) {
+test('### query - Error ###', testWrap(function (t) {
   const connQuerySpy = sinon.spy()
 
-  const _queryStub = sinon.stub(
-    CONNECTOR,
-    'getConnection',
-    (callback) => {
-      callback(null, {
-        query: (query, data, cb) => {
-          connQuerySpy()
-          cb(errorMessage)
-        }
-      })
-    }
-  )
+  const _queryStub = sinon.stub(CONNECTOR, 'getConnection').callsFake((callback) => {
+    callback(null, {
+      query: (query, data, cb) => {
+        connQuerySpy()
+        cb(errorMessage)
+      }
+    })
+  })
 
   CONNECTOR._query({}, {}, cbSpy, executorSpy)
   t.ok(_queryStub.calledOnce)
@@ -68,29 +62,25 @@ test('### query - Error ###', sinon.test(function (t) {
   t.ok(connQuerySpy.calledOnce)
   t.ok(cbSpy.calledWith(errorMessage))
 
-  cbSpy.reset()
+  cbSpy.resetHistory()
   _queryStub.restore()
-  executorSpy.reset()
-  connQuerySpy.reset()
+  executorSpy.resetHistory()
+  connQuerySpy.resetHistory()
 
   t.end()
 }))
 
-test('### query - Success ###', sinon.test(function (t) {
+test('### query - Success ###', testWrap(function (t) {
   const connQuerySpy = sinon.spy()
 
-  const _queryStub = sinon.stub(
-    CONNECTOR,
-    'getConnection',
-    (callback) => {
-      callback(null, {
-        query: (query, result, cb) => {
-          connQuerySpy()
-          cb(null, data)
-        }
-      })
-    }
-  )
+  const _queryStub = sinon.stub(CONNECTOR, 'getConnection').callsFake((callback) => {
+    callback(null, {
+      query: (query, result, cb) => {
+        connQuerySpy()
+        cb(null, data)
+      }
+    })
+  })
 
   CONNECTOR._query({}, {}, cbSpy, executorSpy)
   t.ok(_queryStub.calledOnce)
@@ -98,10 +88,10 @@ test('### query - Success ###', sinon.test(function (t) {
   t.ok(connQuerySpy.calledOnce)
   t.ok(executorSpy.calledWith(data))
 
-  cbSpy.reset()
+  cbSpy.resetHistory()
   _queryStub.restore()
-  executorSpy.reset()
-  connQuerySpy.reset()
+  executorSpy.resetHistory()
+  connQuerySpy.resetHistory()
 
   t.end()
 }))

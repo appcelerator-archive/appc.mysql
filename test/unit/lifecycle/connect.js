@@ -1,9 +1,11 @@
 const test = require('tap').test
 const sinon = require('sinon')
+const sinonTest = require('sinon-test')
+const testWrap = sinonTest(sinon)
 const connectMethod = require('../../../lib/lifecycle/connect')['connect']
 
-test('### Test Connect method with connection pooling set to true error case no error code ###', sinon.test(function (t) {
-    // Stubs & spies
+test('### Test Connect method with connection pooling set to true error case no error code ###', testWrap(function (t) {
+  // Stubs & spies
   const context = {
     config: {
       connection_pooling: true
@@ -19,7 +21,7 @@ test('### Test Connect method with connection pooling set to true error case no 
 
   const mysql = require('../../../node_modules/mysql')
 
-  var createPoolStub = this.stub(mysql, 'createPool', function (config) {
+  var createPoolStub = this.stub(mysql, 'createPool').callsFake(function (config) {
     return {
       getConnection: getConnectionSpy
     }
@@ -28,10 +30,10 @@ test('### Test Connect method with connection pooling set to true error case no 
   function next (errParameter) { }
   const nextSpy = this.spy(next)
 
-    // Execution
+  // Execution
   connectMethod.bind(context, nextSpy)()
 
-    // Test
+  // Test
   t.ok(createPoolStub.calledOnce)
   t.ok(createPoolStub.calledWithExactly(context.config))
   t.ok(getConnectionSpy.calledOnce)
@@ -41,8 +43,8 @@ test('### Test Connect method with connection pooling set to true error case no 
   t.end()
 }))
 
-test('### Test Connect method with connection pooling set to true error case with error code ###', sinon.test(function (t) {
-    // Stubs & spies
+test('### Test Connect method with connection pooling set to true error case with error code ###', testWrap(function (t) {
+  // Stubs & spies
   const context = {
     config: {
       connection_pooling: true
@@ -59,7 +61,7 @@ test('### Test Connect method with connection pooling set to true error case wit
 
   const mysql = require('../../../node_modules/mysql')
 
-  var createPoolStub = this.stub(mysql, 'createPool', function (config) {
+  var createPoolStub = this.stub(mysql, 'createPool').callsFake(function (config) {
     return {
       getConnection: getConnectionSpy
     }
@@ -68,12 +70,12 @@ test('### Test Connect method with connection pooling set to true error case wit
   function next (errParameter) { }
   const nextSpy = this.spy(next)
 
-    // Execution
+  // Execution
   connectMethod.bind(context, nextSpy)()
 
   const expectedErrorMessage = 'Connecting to your MySQL server failed; either it isn\'t running, or your connection details are invalid.'
 
-    // Test
+  // Test
   t.ok(createPoolStub.calledOnce)
   t.ok(createPoolStub.calledWithExactly(context.config))
   t.ok(getConnectionSpy.calledOnce)
@@ -84,8 +86,8 @@ test('### Test Connect method with connection pooling set to true error case wit
   t.end()
 }))
 
-test('### Test Connect method with connection pooling set to true ###', sinon.test(function (t) {
-    // Stubs & spies
+test('### Test Connect method with connection pooling set to true ###', testWrap(function (t) {
+  // Stubs & spies
   const context = {
     config: {
       connection_pooling: true
@@ -105,7 +107,7 @@ test('### Test Connect method with connection pooling set to true ###', sinon.te
 
   const mysql = require('../../../node_modules/mysql')
 
-  var createPoolStub = this.stub(mysql, 'createPool', function (config) {
+  var createPoolStub = this.stub(mysql, 'createPool').callsFake(function (config) {
     return {
       getConnection: getConnectionSpy
     }
@@ -114,10 +116,10 @@ test('### Test Connect method with connection pooling set to true ###', sinon.te
   function next () { }
   const nextSpy = this.spy(next)
 
-    // Execution
+  // Execution
   connectMethod.bind(context, nextSpy)()
 
-    // Test
+  // Test
   t.ok(createPoolStub.calledOnce)
   t.ok(createPoolStub.calledWithExactly(context.config))
   t.ok(getConnectionSpy.calledOnce)
@@ -129,8 +131,8 @@ test('### Test Connect method with connection pooling set to true ###', sinon.te
   t.end()
 }))
 
-test('### Test Connect method with connection pooling set to false ###', sinon.test(function (t) {
-    // Stubs & spies
+test('### Test Connect method with connection pooling set to false ###', testWrap(function (t) {
+  // Stubs & spies
   const context = {
     config: {
       connection_pooling: false
@@ -141,7 +143,7 @@ test('### Test Connect method with connection pooling set to false ###', sinon.t
   const connectSpy = this.spy(connect)
 
   const mysql = require('../../../node_modules/mysql')
-  const createConnectionStub = this.stub(mysql, 'createConnection', function (config) {
+  const createConnectionStub = this.stub(mysql, 'createConnection').callsFake(function (config) {
     return {
       connect: connectSpy
     }
@@ -149,10 +151,10 @@ test('### Test Connect method with connection pooling set to false ###', sinon.t
 
   function next () { }
 
-    // Execution
+  // Execution
   connectMethod.bind(context, next)()
 
-    // Test
+  // Test
   t.ok(createConnectionStub.calledOnce)
   t.ok(createConnectionStub.calledWithExactly(context.config))
   t.ok(connectSpy.calledOnce)

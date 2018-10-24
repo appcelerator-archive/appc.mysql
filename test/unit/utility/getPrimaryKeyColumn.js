@@ -1,6 +1,8 @@
 const test = require('tap').test
 const server = require('../../server')
 const sinon = require('sinon')
+const sinonTest = require('sinon-test')
+const testWrap = sinonTest(sinon)
 var ARROW
 var CONNECTOR
 
@@ -27,27 +29,19 @@ test('### getPrimaryKeyColumn ###', function (t) {
   t.end()
 })
 
-test('### getPrimaryKeyColumn ###', sinon.test(function (t) {
+test('### getPrimaryKeyColumn ###', testWrap(function (t) {
   const Model = ARROW.getModel('Posts')
 
   const pk = Model.metadata.primarykey
   Model.metadata.primarykey = undefined
 
-  const tableNameStub = sinon.stub(
-    CONNECTOR,
-    'getTableName',
-    (Model) => {
-      return 'Posts'
-    }
-  )
+  const tableNameStub = sinon.stub(CONNECTOR, 'getTableName').callsFake((Model) => {
+    return 'Posts'
+  })
 
-  const getTableSchemaStub = sinon.stub(
-    CONNECTOR,
-    'getTableSchema',
-    (Model) => {
-      return { id: { COLUMN_NAME: 'id' } }
-    }
-  )
+  const getTableSchemaStub = sinon.stub(CONNECTOR, 'getTableSchema').callsFake((Model) => {
+    return { id: { COLUMN_NAME: 'id' } }
+  })
 
   CONNECTOR.metadata.schema = { primary_keys: { Posts: 'id' } }
 

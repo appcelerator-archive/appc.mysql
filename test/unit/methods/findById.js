@@ -2,6 +2,8 @@ const test = require('tap').test
 const server = require('./../../server.js')
 const findByIdMethod = require('../../../lib/methods/findByID').findByID
 const sinon = require('sinon')
+const sinonTest = require('sinon-test')
+const testWrap = sinonTest(sinon)
 var ARROW
 var CONNECTOR
 
@@ -18,34 +20,22 @@ test('### Start Arrow ###', function (t) {
     })
 })
 
-test('FindByID without primary key', sinon.test(function (t) {
+test('FindByID without primary key', testWrap(function (t) {
   const Model = ARROW.getModel('Posts')
   function cbError (errorMessage) { }
   const cbErrorSpy = this.spy(cbError)
 
-  const tableStub = this.stub(
-    CONNECTOR,
-    'getTableName',
-    (Model) => {
-      return 'post'
-    }
-  )
+  const tableStub = this.stub(CONNECTOR, 'getTableName').callsFake((Model) => {
+    return 'post'
+  })
 
-  const primaryKeyStub = this.stub(
-    CONNECTOR,
-    'getPrimaryKeyColumn',
-    (Model) => {
-      return false
-    }
-  )
+  const primaryKeyStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake((Model) => {
+    return false
+  })
 
-  const escapeKeysStub = this.stub(
-    CONNECTOR,
-    'escapeKeys',
-    (Model) => {
-      return ['title', 'name']
-    }
-  )
+  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys').callsFake((Model) => {
+    return ['title', 'name']
+  })
 
   findByIdMethod.bind(CONNECTOR, Model, 'id', cbErrorSpy)()
 
@@ -57,42 +47,26 @@ test('FindByID without primary key', sinon.test(function (t) {
   t.end()
 }))
 
-test('FindByID empty', sinon.test(function (t) {
+test('FindByID empty', testWrap(function (t) {
   const Model = ARROW.getModel('Posts')
   function cb () { }
   const cbSpy = this.spy(cb)
 
-  const tableStub = this.stub(
-    CONNECTOR,
-    'getTableName',
-    (Model) => {
-      return 'post'
-    }
-  )
+  const tableStub = this.stub(CONNECTOR, 'getTableName').callsFake((Model) => {
+    return 'post'
+  })
 
-  const primaryKeyStub = this.stub(
-    CONNECTOR,
-    'getPrimaryKeyColumn',
-    (Model) => {
-      return true
-    }
-  )
+  const primaryKeyStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake((Model) => {
+    return true
+  })
 
-  const escapeKeysStub = this.stub(
-    CONNECTOR,
-    'escapeKeys',
-    (Model) => {
-      return ['title', 'name']
-    }
-  )
+  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys').callsFake((Model) => {
+    return ['title', 'name']
+  })
 
-  const queryStub = this.stub(
-    CONNECTOR,
-    '_query',
-    (query, id, callback, rows) => {
-      rows()
-    }
-  )
+  const queryStub = this.stub(CONNECTOR, '_query').callsFake((query, id, callback, rows) => {
+    rows()
+  })
 
   findByIdMethod.bind(CONNECTOR, Model, 'id', cbSpy)()
 
@@ -105,50 +79,30 @@ test('FindByID empty', sinon.test(function (t) {
   t.end()
 }))
 
-test('FindByID response', sinon.test(function (t) {
+test('FindByID response', testWrap(function (t) {
   const Model = ARROW.getModel('Posts')
   function cb (errorMessage, data) { }
   const cbSpy = this.spy(cb)
 
-  const tableStub = this.stub(
-    CONNECTOR,
-    'getTableName',
-    (Model) => {
-      return 'post'
-    }
-  )
+  const tableStub = this.stub(CONNECTOR, 'getTableName').callsFake((Model) => {
+    return 'post'
+  })
 
-  const primaryKeyStub = this.stub(
-    CONNECTOR,
-    'getPrimaryKeyColumn',
-    (Model) => {
-      return true
-    }
-  )
+  const primaryKeyStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake((Model) => {
+    return true
+  })
 
-  const escapeKeysStub = this.stub(
-    CONNECTOR,
-    'escapeKeys',
-    (Model) => {
-      return ['title', 'name']
-    }
-  )
+  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys').callsFake((Model) => {
+    return ['title', 'name']
+  })
 
-  const getInstanceFromRowStub = this.stub(
-    CONNECTOR,
-    'getInstanceFromRow',
-    (Model, rows) => {
-      return 'data'
-    }
-  )
+  const getInstanceFromRowStub = this.stub(CONNECTOR, 'getInstanceFromRow').callsFake((Model, rows) => {
+    return 'data'
+  })
 
-  const queryStub = this.stub(
-    CONNECTOR,
-    '_query',
-    (query, id, callback, rows) => {
-      rows('valid')
-    }
-  )
+  const queryStub = this.stub(CONNECTOR, '_query').callsFake((query, id, callback, rows) => {
+    rows('valid')
+  })
 
   findByIdMethod.bind(CONNECTOR, Model, 'id', cbSpy)()
 

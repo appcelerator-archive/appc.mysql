@@ -1,5 +1,5 @@
 module.exports = function (grunt) {
-    // Project configuration.
+  // Project configuration.
   grunt.initConfig({
     mochaTest: {
       test: {
@@ -11,7 +11,7 @@ module.exports = function (grunt) {
     }
   })
 
-    // Load grunt plugins for modules.
+  // Load grunt plugins for modules.
   grunt.loadNpmTasks('grunt-mocha-test')
 
   grunt.registerTask('default', ['mochaTest'])

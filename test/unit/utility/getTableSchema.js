@@ -2,6 +2,8 @@ const test = require('tap').test
 const getTableSchema = require('../../../lib/utility/getTableSchema').getTableSchema
 const server = require('../../server')
 const sinon = require('sinon')
+const sinonTest = require('sinon-test')
+const testWrap = sinonTest(sinon)
 var ARROW
 var CONNECTOR
 
@@ -18,18 +20,12 @@ test('### Start Arrow ###', function (t) {
     })
 })
 
-test('### getTableSchema ###', sinon.test(function (t) {
+test('### getTableSchema ###', testWrap(function (t) {
   const Model = ARROW.getModel('Posts')
 
   CONNECTOR.schema = { objects: { Posts: 'success' } }
 
-  const tableNameStub = sinon.stub(
-    CONNECTOR,
-    'getTableName',
-    (Model) => {
-      return 'Posts'
-    }
-  )
+  const tableNameStub = sinon.stub(CONNECTOR, 'getTableName').callsFake((Model) => { return 'Posts' })
 
   getTableSchema.bind(CONNECTOR, Model)()
 

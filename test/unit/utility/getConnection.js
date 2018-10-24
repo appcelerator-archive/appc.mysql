@@ -1,6 +1,8 @@
 const test = require('tap').test
 const server = require('../../server')
 const sinon = require('sinon')
+const sinonTest = require('sinon-test')
+const testWrap = sinonTest(sinon)
 var ARROW
 var CONNECTOR
 
@@ -25,14 +27,10 @@ test('### Start Arrow ###', function (t) {
     })
 })
 
-test('### getConnection - Error case ###', sinon.test(function (t) {
-  const connectionStub = sinon.stub(
-    CONNECTOR.pool,
-    'getConnection',
-    (callback) => {
-      callback(errorMessage)
-    }
-  )
+test('### getConnection - Error case ###', testWrap(function (t) {
+  const connectionStub = sinon.stub(CONNECTOR.pool, 'getConnection').callsFake((callback) => {
+    callback(errorMessage)
+  })
 
   CONNECTOR.getConnection(cbSpy)
   t.ok(connectionStub.calledOnce)
@@ -40,19 +38,15 @@ test('### getConnection - Error case ###', sinon.test(function (t) {
   t.ok(cbSpy.calledWith(errorMessage))
 
   connectionStub.restore()
-  cbSpy.reset()
+  cbSpy.resetHistory()
 
   t.end()
 }))
 
-test('### getConnection - Success case ###', sinon.test(function (t) {
-  const connectionStub = this.stub(
-    CONNECTOR.pool,
-    'getConnection',
-    (callback) => {
-      callback(null, data)
-    }
-  )
+test('### getConnection - Success case ###', testWrap(function (t) {
+  const connectionStub = this.stub(CONNECTOR.pool, 'getConnection').callsFake((callback) => {
+    callback(null, data)
+  })
 
   CONNECTOR.getConnection(cbSpy)
   t.ok(connectionStub.calledOnce)
@@ -60,12 +54,12 @@ test('### getConnection - Success case ###', sinon.test(function (t) {
   t.ok(cbSpy.calledWith(null, data))
 
   connectionStub.restore()
-  cbSpy.reset()
+  cbSpy.resetHistory()
 
   t.end()
 }))
 
-test('### connector.getConnection - Success case ###', sinon.test(function (t) {
+test('### connector.getConnection - Success case ###', testWrap(function (t) {
   const origPool = CONNECTOR.pool
   CONNECTOR.pool = null
 

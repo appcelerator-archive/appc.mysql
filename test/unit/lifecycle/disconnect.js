@@ -1,8 +1,10 @@
 const test = require('tap').test
 const sinon = require('sinon')
+const sinonTest = require('sinon-test')
+const testWrap = sinonTest(sinon)
 const disconnectMethod = require('../../../lib/lifecycle/disconnect')['disconnect']
 
-test('### Test Disconnect method with connection pooling set to true ###', sinon.test(function (t) {
+test('### Test Disconnect method with connection pooling set to true ###', testWrap(function (t) {
   function next () { }
   const nextSpy = this.spy(next)
 
@@ -17,10 +19,10 @@ test('### Test Disconnect method with connection pooling set to true ###', sinon
     }
   }
 
-    // Execution
+  // Execution
   disconnectMethod.bind(context, nextSpy)()
 
-    // Test
+  // Test
   t.ok(endSpy.calledOnce)
   t.ok(nextSpy.calledOnce)
   t.ok(nextSpy.args[0].length === 0)
@@ -28,16 +30,16 @@ test('### Test Disconnect method with connection pooling set to true ###', sinon
   t.end()
 }))
 
-test('### Test Disconnect method with connection pooling set to false ###', sinon.test(function (t) {
+test('### Test Disconnect method with connection pooling set to false ###', testWrap(function (t) {
   function next () { }
   const nextSpy = this.spy(next)
 
   const context = { }
 
-    // Execution
+  // Execution
   disconnectMethod.bind(context, nextSpy)()
 
-    // Test
+  // Test
   t.ok(nextSpy.calledOnce)
   t.ok(nextSpy.args[0].length === 0)
 

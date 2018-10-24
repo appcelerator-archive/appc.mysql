@@ -24,23 +24,23 @@ test('### Upsert - update ###', function (t) {
   const model = ARROW.getModel('Posts')
   var sandbox = sinon.sandbox.create()
 
-  var tableNameStub = sandbox.stub(CONNECTOR, 'getTableName', function (model) {
+  var tableNameStub = sandbox.stub(CONNECTOR, 'getTableName').callsFake(function (model) {
     return 'Post'
   })
 
-  var primaryKeyStub = sandbox.stub(CONNECTOR, 'getPrimaryKeyColumn', function (model) {
+  var primaryKeyStub = sandbox.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(function (model) {
     return 'id'
   })
 
-  var fetchColumnsStub = sandbox.stub(CONNECTOR, 'fetchColumns', function (table, payload) {
+  var fetchColumnsStub = sandbox.stub(CONNECTOR, 'fetchColumns').callsFake(function (table, payload) {
     return ['title', 'content', 'books']
   })
 
-  var findByIDStub = sandbox.stub(CONNECTOR, 'findByID', function (model, id, callback) {
+  var findByIDStub = sandbox.stub(CONNECTOR, 'findByID').callsFake(function (model, id, callback) {
     callback(null, { title: 'test', content: 'test', books: [] })
   })
 
-  var queryStub = sandbox.stub(CONNECTOR, '_query', function (query, values, callback, queryCallback) {
+  var queryStub = sandbox.stub(CONNECTOR, '_query').callsFake(function (query, values, callback, queryCallback) {
     queryCallback({
       affectedRows: 1,
       insertId: 0
@@ -83,23 +83,23 @@ test('### Upsert - update without primary key ###', function (t) {
   const model = ARROW.getModel('Posts')
   var sandbox = sinon.sandbox.create()
 
-  var tableNameStub = sandbox.stub(CONNECTOR, 'getTableName', function (model) {
+  var tableNameStub = sandbox.stub(CONNECTOR, 'getTableName').callsFake(function (model) {
     return 'Post'
   })
 
-  var primaryKeyStub = sandbox.stub(CONNECTOR, 'getPrimaryKeyColumn', function (model) {
+  var primaryKeyStub = sandbox.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(function (model) {
     return undefined
   })
 
-  var fetchColumnsStub = sandbox.stub(CONNECTOR, 'fetchColumns', function (table, payload) {
+  var fetchColumnsStub = sandbox.stub(CONNECTOR, 'fetchColumns').callsFake(function (table, payload) {
     return ['title', 'content', 'books']
   })
 
-  var findByIDStub = sandbox.stub(CONNECTOR, 'findByID', function (model, id, callback) {
+  var findByIDStub = sandbox.stub(CONNECTOR, 'findByID').callsFake(function (model, id, callback) {
     callback(null, { title: 'test', content: 'test', books: [] })
   })
 
-  var arrowORMErrorStub = sandbox.stub(Arrow, 'ORMError', function (message) { })
+  var arrowORMErrorStub = sandbox.stub(Arrow, 'ORMError').callsFake(function (message) { })
   const cbSpy = sandbox.spy()
   const testInstance = {
     title: 'test',
@@ -129,22 +129,22 @@ test('### Upsert - insert ###', function (t) {
   const model = ARROW.getModel('Posts')
   var sandbox = sinon.sandbox.create()
 
-  var tableNameStub = sandbox.stub(CONNECTOR, 'getTableName', function (model) {
+  var tableNameStub = sandbox.stub(CONNECTOR, 'getTableName').callsFake(function (model) {
     return 'Post'
   })
 
-  var primaryKeyStub = sandbox.stub(CONNECTOR, 'getPrimaryKeyColumn', function (model) {
+  var primaryKeyStub = sandbox.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(function (model) {
     return 'id'
   })
 
-  var fetchColumnsStub = sandbox.stub(CONNECTOR, 'fetchColumns', function (table, payload) {
+  var fetchColumnsStub = sandbox.stub(CONNECTOR, 'fetchColumns').callsFake(function (table, payload) {
     return ['title', 'content', 'books']
   })
-  var findByIDStub = sandbox.stub(CONNECTOR, 'findByID', function (model, id, callback) {
+  var findByIDStub = sandbox.stub(CONNECTOR, 'findByID').callsFake(function (model, id, callback) {
     callback(null, undefined)
   })
 
-  var queryStub = sandbox.stub(CONNECTOR, '_query', function (query, data, callback, queryCallback) {
+  var queryStub = sandbox.stub(CONNECTOR, '_query').callsFake(function (query, data, callback, queryCallback) {
     queryCallback([{ id: 310, first_name: 'c', last_name: 'b', email_address: 'e' }])
   })
   const cbSpy = sandbox.spy()
@@ -183,22 +183,22 @@ test('### Upsert - insert without primary key ###', function (t) {
   const model = ARROW.getModel('Posts')
   var sandbox = sinon.sandbox.create()
 
-  var tableNameStub = sandbox.stub(CONNECTOR, 'getTableName', function (model) {
+  var tableNameStub = sandbox.stub(CONNECTOR, 'getTableName').callsFake(function (model) {
     return 'Post'
   })
 
-  var primaryKeyStub = sandbox.stub(CONNECTOR, 'getPrimaryKeyColumn', function (model) {
+  var primaryKeyStub = sandbox.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(function (model) {
     return undefined
   })
 
-  var fetchColumnsStub = sandbox.stub(CONNECTOR, 'fetchColumns', function (table, payload) {
+  var fetchColumnsStub = sandbox.stub(CONNECTOR, 'fetchColumns').callsFake(function (table, payload) {
     return ['title', 'content', 'books']
   })
-  var findByIDStub = sandbox.stub(CONNECTOR, 'findByID', function (model, id, callback) {
+  var findByIDStub = sandbox.stub(CONNECTOR, 'findByID').callsFake(function (model, id, callback) {
     callback(null, undefined)
   })
 
-  var queryStub = sandbox.stub(CONNECTOR, '_query', function (query, data, callback, queryCallback) {
+  var queryStub = sandbox.stub(CONNECTOR, '_query').callsFake(function (query, data, callback, queryCallback) {
     queryCallback([{ id: 310, first_name: 'c', last_name: 'b', email_address: 'e' }])
   })
   const cbSpy = sandbox.spy()
@@ -237,15 +237,15 @@ test('### Upsert - error case ###', function (t) {
   const model = ARROW.getModel('Posts')
   var sandbox = sinon.sandbox.create()
 
-  var tableNameStub = sandbox.stub(CONNECTOR, 'getTableName', function (model) {
+  var tableNameStub = sandbox.stub(CONNECTOR, 'getTableName').callsFake(function (model) {
     return 'Post'
   })
 
-  var primaryKeyStub = sandbox.stub(CONNECTOR, 'getPrimaryKeyColumn', function (model) {
+  var primaryKeyStub = sandbox.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(function (model) {
     return 'id'
   })
 
-  var fetchColumnsStub = sandbox.stub(CONNECTOR, 'fetchColumns', function (table, payload) {
+  var fetchColumnsStub = sandbox.stub(CONNECTOR, 'fetchColumns').callsFake(function (table, payload) {
     return ['title', 'content', 'books']
   })
 
@@ -264,18 +264,18 @@ test('### Upsert - findByID error ###', function (t) {
   const model = ARROW.getModel('Posts')
   var sandbox = sinon.sandbox.create()
 
-  var tableNameStub = sandbox.stub(CONNECTOR, 'getTableName', function (model) {
+  var tableNameStub = sandbox.stub(CONNECTOR, 'getTableName').callsFake(function (model) {
     return 'Post'
   })
 
-  var primaryKeyStub = sandbox.stub(CONNECTOR, 'getPrimaryKeyColumn', function (model) {
+  var primaryKeyStub = sandbox.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(function (model) {
     return 'id'
   })
 
-  var fetchColumnsStub = sandbox.stub(CONNECTOR, 'fetchColumns', function (table, payload) {
+  var fetchColumnsStub = sandbox.stub(CONNECTOR, 'fetchColumns').callsFake(function (table, payload) {
     return ['title', 'content', 'books']
   })
-  var findByIDStub = sandbox.stub(CONNECTOR, 'findByID', function (model, id, callback) {
+  var findByIDStub = sandbox.stub(CONNECTOR, 'findByID').callsFake(function (model, id, callback) {
     callback(new Error('err'))
   })
 
@@ -305,7 +305,9 @@ test('### Upsert - findByID error ###', function (t) {
   t.ok(primaryKeyStub.calledOnce)
   t.ok(findByIDStub.calledOnce)
   t.ok(cbSpy.calledOnce)
-  t.ok(cbSpy.calledWith(new Error('err')))
+  const spyArg = cbSpy.firstCall.args[0]
+  t.ok(spyArg instanceof Error)
+  t.ok(spyArg.message === 'err')
   sandbox.restore()
   t.end()
 })

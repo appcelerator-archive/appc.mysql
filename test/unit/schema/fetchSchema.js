@@ -51,7 +51,7 @@ test('### Fetch Schema without existing schema', function (t) {
   var test2 = {
   }
 
-  const _queryStub = sinon.stub(CONNECTOR, '_query', function (query, db, nextMethodSpy, executor) {
+  const _queryStub = sinon.stub(CONNECTOR, '_query').callsFake(function (query, db, nextMethodSpy, executor) {
     executor([test1, test2])
   })
   fetchSchemaMethod.bind(CONNECTOR, nextMethodSpy)()

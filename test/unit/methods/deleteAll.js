@@ -8,15 +8,15 @@ var CONNECTOR
 
 test('### Start Arrow ###', function (t) {
   server()
-        .then((inst) => {
-          ARROW = inst
-          CONNECTOR = ARROW.getConnector('appc.mysql')
-          t.ok(ARROW, 'Arrow has been started')
-          t.end()
-        })
-        .catch((err) => {
-          t.threw(err)
-        })
+    .then((inst) => {
+      ARROW = inst
+      CONNECTOR = ARROW.getConnector('appc.mysql')
+      t.ok(ARROW, 'Arrow has been started')
+      t.end()
+    })
+    .catch((err) => {
+      t.threw(err)
+    })
 })
 
 test('### DeleteAll Call with no result###', function (t) {
@@ -30,8 +30,8 @@ test('### DeleteAll Call with no result###', function (t) {
 
   const model = ARROW.getModel('Posts')
 
-  var tableNameStub = sinon.stub(CONNECTOR, 'getTableName', getTableName)
-  var queryStub = sinon.stub(CONNECTOR, '_query', _queryStub)
+  var tableNameStub = sinon.stub(CONNECTOR, 'getTableName').callsFake(getTableName)
+  var queryStub = sinon.stub(CONNECTOR, '_query').callsFake(_queryStub)
   function cb (errMessage, instance) {
 
   }
@@ -60,8 +60,8 @@ test('### DeleteAll Call Ok###', function (t) {
 
   const model = ARROW.getModel('Posts')
 
-  var tableNameStub = sinon.stub(CONNECTOR, 'getTableName', getTableName)
-  var queryStub = sinon.stub(CONNECTOR, '_query', _queryStub)
+  var tableNameStub = sinon.stub(CONNECTOR, 'getTableName').callsFake(getTableName)
+  var queryStub = sinon.stub(CONNECTOR, '_query').callsFake(_queryStub)
   function cb (errMessage, instance) {
 
   }

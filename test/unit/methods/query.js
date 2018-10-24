@@ -9,37 +9,37 @@ var CONNECTOR
 
 test('### Start Arrow ###', function (t) {
   server()
-        .then((inst) => {
-          ARROW = inst
-          CONNECTOR = ARROW.getConnector('appc.mysql')
-          t.ok(ARROW, 'Arrow has been started')
-          t.end()
-        })
-        .catch((err) => {
-          t.threw(err)
-        })
+    .then((inst) => {
+      ARROW = inst
+      CONNECTOR = ARROW.getConnector('appc.mysql')
+      t.ok(ARROW, 'Arrow has been started')
+      t.end()
+    })
+    .catch((err) => {
+      t.threw(err)
+    })
 })
 
 test('### Query Call with no results ###', function (t) {
   const model = ARROW.getModel('Posts')
 
-  const tableNameStub = sinon.stub(CONNECTOR, 'getTableName', function (model) {
+  const tableNameStub = sinon.stub(CONNECTOR, 'getTableName').callsFake(function (model) {
     return 'Post'
   })
 
-  const primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn', function (model) {
+  const primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(function (model) {
     return 1
   })
 
-  const escapeKeysStub = sinon.stub(CONNECTOR, 'escapeKeys', function (keys) {
+  const escapeKeysStub = sinon.stub(CONNECTOR, 'escapeKeys').callsFake(function (keys) {
     return keys
   })
 
-  const translateWhereToQueryStub = sinon.stub(CONNECTOR, 'translateWhereToQuery', function (where, values) {
+  const translateWhereToQueryStub = sinon.stub(CONNECTOR, 'translateWhereToQuery').callsFake(function (where, values) {
 
   })
 
-  const _queryStub = sinon.stub(CONNECTOR, '_query', function (query, data, callback, executor) {
+  const _queryStub = sinon.stub(CONNECTOR, '_query').callsFake(function (query, data, callback, executor) {
     executor()
   })
 
@@ -64,19 +64,19 @@ test('### Query Call with no results ###', function (t) {
 
 test('### Query Call with results ###', function (t) {
   const model = ARROW.getModel('Posts')
-  const tableNameStub = sinon.stub(CONNECTOR, 'getTableName', function (model) {
+  const tableNameStub = sinon.stub(CONNECTOR, 'getTableName').callsFake(function (model) {
     return 'Post'
   })
 
-  const primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn', function (model) {
+  const primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(function (model) {
     return 'id'
   })
 
-  const escapeKeysStub = sinon.stub(CONNECTOR, 'escapeKeys', function (keys) {
+  const escapeKeysStub = sinon.stub(CONNECTOR, 'escapeKeys').callsFake(function (keys) {
     return keys
   })
 
-  const translateWhereToQueryStub = sinon.stub(CONNECTOR, 'translateWhereToQuery', function (where, values) {
+  const translateWhereToQueryStub = sinon.stub(CONNECTOR, 'translateWhereToQuery').callsFake(function (where, values) {
     values.push({ title: 'test' })
     return ' WHERE $eq = ?'
   })
@@ -90,9 +90,9 @@ test('### Query Call with results ###', function (t) {
     return sinon.createStubInstance(ArrowCollectionMock)
   })
 
-  sinon.stub(arrow, 'Collection', arrowCollectionSpy)
+  sinon.stub(arrow, 'Collection').callsFake(arrowCollectionSpy)
 
-  const _queryStub = sinon.stub(CONNECTOR, '_query', function (query, data, callback, executor) {
+  const _queryStub = sinon.stub(CONNECTOR, '_query').callsFake(function (query, data, callback, executor) {
     executor([test, test1])
   })
 
@@ -110,7 +110,7 @@ test('### Query Call with results ###', function (t) {
 
   var instance = model.instance(test, false)
 
-  const getInstanceFromRowStub = sinon.stub(CONNECTOR, 'getInstanceFromRow', function (model, row) {
+  const getInstanceFromRowStub = sinon.stub(CONNECTOR, 'getInstanceFromRow').callsFake(function (model, row) {
     return instance
   })
 
@@ -148,23 +148,23 @@ test('### Query Call with results ###', function (t) {
 test('### Query Call with different query and no results  ###', function (t) {
   const model = ARROW.getModel('Posts')
 
-  const tableNameStub = sinon.stub(CONNECTOR, 'getTableName', function (model) {
+  const tableNameStub = sinon.stub(CONNECTOR, 'getTableName').callsFake(function (model) {
     return 'Post'
   })
 
-  const primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn', function (model) {
+  const primaryKeyStub = sinon.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake(function (model) {
     return 'id'
   })
 
-  const escapeKeysStub = sinon.stub(CONNECTOR, 'escapeKeys', function (keys) {
+  const escapeKeysStub = sinon.stub(CONNECTOR, 'escapeKeys').callsFake(function (keys) {
     return keys
   })
 
-  const _queryStub = sinon.stub(CONNECTOR, '_query', function (query, data, callback, executor) {
+  const _queryStub = sinon.stub(CONNECTOR, '_query').callsFake(function (query, data, callback, executor) {
     executor()
   })
 
-  const getTableSchemaStub = sinon.stub(CONNECTOR, 'getTableSchema', function (model) {
+  const getTableSchemaStub = sinon.stub(CONNECTOR, 'getTableSchema').callsFake(function (model) {
 
   })
 

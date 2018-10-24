@@ -2,6 +2,8 @@ const test = require('tap').test
 const server = require('../../server')
 const findAllMethod = require('./../../../lib/methods/findAll').findAll
 const sinon = require('sinon')
+const sinonTest = require('sinon-test')
+const testWrap = sinonTest(sinon)
 const arrow = require('arrow')
 var ARROW
 var CONNECTOR
@@ -19,42 +21,26 @@ test('### Start Arrow ###', function (t) {
     })
 })
 
-test('### Test findAll Method ###', sinon.test(function (t) {
+test('### Test findAll Method ###', testWrap(function (t) {
   const Model = ARROW.getModel('Posts')
   function cb (errorMessage, data) { }
   const cbSpy = this.spy(cb)
 
-  const tableNameStub = this.stub(
-    CONNECTOR,
-    'getTableName',
-    (Model) => {
-      return 'test'
-    }
-  )
+  const tableNameStub = this.stub(CONNECTOR, 'getTableName').callsFake((Model) => {
+    return 'test'
+  })
 
-  const getPrimaryKeyColumnStub = this.stub(
-    CONNECTOR,
-    'getPrimaryKeyColumn',
-    (Model) => {
-      return true
-    }
-  )
+  const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake((Model) => {
+    return true
+  })
 
-  const escapeKeysStub = this.stub(
-    CONNECTOR,
-    'escapeKeys',
-    (Model) => {
-      return ["'title'", "'content'"]
-    }
-  )
+  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys').callsFake((Model) => {
+    return ["'title'", "'content'"]
+  })
 
-  const getInstanceFromRowStub = this.stub(
-    CONNECTOR,
-    'getInstanceFromRow',
-    (Model) => {
-      return 'data'
-    }
-  )
+  const getInstanceFromRowStub = this.stub(CONNECTOR, 'getInstanceFromRow').callsFake((Model) => {
+    return 'data'
+  })
 
   const ArrowCollectionMock = (function () {
     function ArrowCollectionMock () { }
@@ -65,15 +51,11 @@ test('### Test findAll Method ###', sinon.test(function (t) {
     return sinon.createStubInstance(ArrowCollectionMock)
   })
 
-  this.stub(arrow, 'Collection', arrowCollectionSpy)
+  this.stub(arrow, 'Collection').callsFake(arrowCollectionSpy)
 
-  const queryStub = this.stub(
-    CONNECTOR,
-    '_query',
-    (query, callback, executor) => {
-      executor([1, 2, 3])
-    }
-  )
+  const queryStub = this.stub(CONNECTOR, '_query').callsFake((query, callback, executor) => {
+    executor([1, 2, 3])
+  })
 
   findAllMethod.bind(CONNECTOR, Model, cbSpy)()
 
@@ -86,42 +68,26 @@ test('### Test findAll Method ###', sinon.test(function (t) {
   t.end()
 }))
 
-test('### Test findAll Method - primaryKey column ###', sinon.test(function (t) {
+test('### Test findAll Method - primaryKey column ###', testWrap(function (t) {
   const Model = ARROW.getModel('Posts')
   function cb (errorMessage, data) { }
   const cbSpy = this.spy(cb)
 
-  const tableNameStub = this.stub(
-    CONNECTOR,
-    'getTableName',
-    (Model) => {
-      return 'test'
-    }
-  )
+  const tableNameStub = this.stub(CONNECTOR, 'getTableName').callsFake((Model) => {
+    return 'test'
+  })
 
-  const getPrimaryKeyColumnStub = this.stub(
-    CONNECTOR,
-    'getPrimaryKeyColumn',
-    (Model) => {
-      return false
-    }
-  )
+  const getPrimaryKeyColumnStub = this.stub(CONNECTOR, 'getPrimaryKeyColumn').callsFake((Model) => {
+    return false
+  })
 
-  const escapeKeysStub = this.stub(
-    CONNECTOR,
-    'escapeKeys',
-    (Model) => {
-      return ["'title'", "'content'"]
-    }
-  )
+  const escapeKeysStub = this.stub(CONNECTOR, 'escapeKeys').callsFake((Model) => {
+    return ["'title'", "'content'"]
+  })
 
-  const getInstanceFromRowStub = this.stub(
-    CONNECTOR,
-    'getInstanceFromRow',
-    (Model) => {
-      return 'data'
-    }
-  )
+  const getInstanceFromRowStub = this.stub(CONNECTOR, 'getInstanceFromRow').callsFake((Model) => {
+    return 'data'
+  })
 
   const ArrowCollectionMock = (function () {
     function ArrowCollectionMock () { }
@@ -132,15 +98,11 @@ test('### Test findAll Method - primaryKey column ###', sinon.test(function (t) 
     return sinon.createStubInstance(ArrowCollectionMock)
   })
 
-  this.stub(arrow, 'Collection', arrowCollectionSpy)
+  this.stub(arrow, 'Collection').callsFake(arrowCollectionSpy)
 
-  const queryStub = this.stub(
-    CONNECTOR,
-    '_query',
-    (query, callback, executor) => {
-      executor([1, 2, 3])
-    }
-  )
+  const queryStub = this.stub(CONNECTOR, '_query').callsFake((query, callback, executor) => {
+    executor([1, 2, 3])
+  })
 
   findAllMethod.bind(CONNECTOR, Model, cbSpy)()
 

@@ -2,6 +2,9 @@ const test = require('tap').test
 const server = require('../../server')
 const fetchMetadataMethod = require('./../../../lib/metadata/fetchMetadata').fetchMetadata
 const sinon = require('sinon')
+const sinonTest = require('sinon-test')
+const testWrap = sinonTest(sinon)
+
 var ARROW
 var CONNECTOR
 
@@ -18,7 +21,7 @@ test('### Start Arrow ###', function (t) {
     })
 })
 
-test('### fetchMetadata test response, filends name and type ###', sinon.test(function (t) {
+test('### fetchMetadata test response, filends name and type ###', testWrap(function (t) {
   function cb (errorMessage, data) { }
   const cbSpy = this.spy(cb)
 
